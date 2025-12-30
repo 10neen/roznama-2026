@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="saidi-logo.png">
+    <title>تطبيق نتيجة الصعيدي 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-ads">
+            <img src="saidi-logo.png" alt="لوجو الصعيدي" class="app-logo">
+            <p>إهداء من</p>
+            <h1>معرض الصعيدي للأدوات الصحية</h1>
+            <p>بشتيل - إمبابة - الجيزة</p>
+        </div>
+
+        <div class="digital-clock-container">
+            <div class="digital-clock" id="digital">00:00:00</div>
+            <div id="ampm" class="ampm-text">--</div>
+        </div>
+
+        <div class="calendar-leaf">
+            <div class="leaf-header" id="day-name">--</div>
+            <div class="leaf-body">
+                <div class="side-box hijri" id="hijri-date">
+                    <div class="date-num">--</div>
+                    <div class="month-name">--</div>
+                </div>
+                <div class="side-box gregorian" id="gregorian-date">
+                    <div class="date-num">--</div>
+                    <div class="month-name">--</div>
+                </div>
+            </div>
+            <div class="year-footer">٢٠٢٦ م</div>
+        </div>
+
+        <div class="countdown-banner" id="countdown-banner">جارِ الحساب...</div>
+
+        <div class="calendar-explorer">
+            <div class="explorer-header">
+                <button id="prevMonth" class="nav-btn">◀</button>
+                <h3 id="currentViewMonth">يناير ٢٠٢٦</h3>
+                <button id="nextMonth" class="nav-btn">▶</button>
+            </div>
+            <div class="grid-header">
+                <span>س</span><span>ح</span><span>ن</span><span>ث</span><span>ر</span><span>خ</span><span>ج</span>
+            </div>
+            <div id="daysGrid" class="days-grid"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
