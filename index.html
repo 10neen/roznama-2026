@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#800000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="saidi-logo.png">
-    <title>تطبيق نتيجة الصعيدي 2026</title>
+    <title>نتيجة الصعيدي 2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -39,23 +41,27 @@
 
         <div class="countdown-banner" id="countdown-banner">جارِ الحساب...</div>
 
-        <div class="calendar-explorer">
+        <div class="calendar-explorer" id="toggleCalendar">
             <div class="explorer-header">
-                <button id="prevMonth" class="nav-btn">◀</button>
+                <button id="prevMonth" class="nav-btn" onclick="event.stopPropagation()">◀</button>
                 <h3 id="currentViewMonth">يناير ٢٠٢٦</h3>
-                <button id="nextMonth" class="nav-btn">▶</button>
+                <button id="nextMonth" class="nav-btn" onclick="event.stopPropagation()">▶</button>
             </div>
-            <div class="grid-header">
-                <span>س</span><span>ح</span><span>ن</span><span>ث</span><span>ر</span><span>خ</span><span>ج</span>
+            <div class="explorer-body">
+                <div class="grid-header">
+                    <span>س</span><span>ح</span><span>ن</span><span>ث</span><span>ر</span><span>خ</span><span>ج</span>
+                </div>
+                <div id="daysGrid" class="days-grid"></div>
             </div>
-            <div id="daysGrid" class="days-grid"></div>
         </div>
     </div>
 
     <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
         }
     </script>
 </body>
