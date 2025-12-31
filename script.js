@@ -27,13 +27,13 @@ function updateClock() {
 
     // التاريخ الهجري (أم القرى)
     try {
-        const hFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma-nu-arab', { day: 'numeric', month: 'long' });
+        const hFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { day: 'numeric', month: 'long' });
         const hParts = hFormatter.formatToParts(now);
         document.getElementById("hijri-date").innerHTML = `
             <div class="date-num">${hParts.find(p => p.type === 'day').value}</div>
             <div class="month-name">${hParts.find(p => p.type === 'month').value}</div>
         `;
-    } catch (e) { console.error("Hijri Error"); }
+    } catch (e) { console.error("Hijri Error", e); }
 
     updateCountdown(now);
 }
@@ -84,7 +84,7 @@ function renderCalendar(monthIndex) {
 
     for (let d = 1; d <= daysInMonth; d++) {
         let dateObj = new Date(year, monthIndex, d);
-        let hDay = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma-nu-arab', {day:'numeric'}).format(dateObj);
+        let hDay = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {day:'numeric'}).format(dateObj);
         let isToday = (new Date().toDateString() === dateObj.toDateString()) ? "today" : "";
         grid.innerHTML += `<div class="day-card ${isToday}"><span class="m-day">${d}</span><span class="h-day">${hDay}</span></div>`;
     }
