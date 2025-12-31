@@ -2,11 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#800000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="saidi-logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نتيجة الصعيدي 2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -33,7 +29,7 @@
                 </div>
                 <div class="side-box gregorian" id="gregorian-date">
                     <div class="date-num">--</div>
-                    <div class="month-name">--</div>
+                    <div class="month-name">--</div>a
                 </div>
             </div>
             <div class="year-footer">٢٠٢٦ م</div>
@@ -43,9 +39,9 @@
 
         <div class="calendar-explorer" id="toggleCalendar">
             <div class="explorer-header">
-                <button id="prevMonth" class="nav-btn" onclick="event.stopPropagation()">◀</button>
+                <button id="prevMonth" class="nav-btn">◀</button>
                 <h3 id="currentViewMonth">يناير ٢٠٢٦</h3>
-                <button id="nextMonth" class="nav-btn" onclick="event.stopPropagation()">▶</button>
+                <button id="nextMonth" class="nav-btn">▶</button>
             </div>
             <div class="explorer-body">
                 <div class="grid-header">
@@ -57,12 +53,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js');
-            });
-        }
-    </script>
 </body>
 </html>
