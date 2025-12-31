@@ -1,113 +1,184 @@
-body {
-    background-color: #000;
-    color: #fff;
-    margin: 0;
-    padding: 10px 0;
-    display: flex;
-    justify-content: center;
-    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-    direction: rtl;
+body { 
+  background: #121212; /* رمادي غامق مريح بدل الأسود الصريح */
+  color: #f5f5f5; 
+  margin: 0; 
+  padding: 10px 0; 
+  display: flex; 
+  justify-content: center; 
+  font-family: sans-serif; 
+  direction: rtl; 
 }
 
-.container {
-    width: 95%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.container { 
+  width: 95%; 
+  max-width: 400px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 15px; 
 }
 
-.header-ads {
-    background: #111;
-    padding: 15px;
-    border: 1px solid #d4af37;
-    border-radius: 15px;
-    text-align: center;
+.header-ads { 
+  background: #1e1e1e; 
+  padding: 10px; 
+  border: 1px solid #d4af37; 
+  border-radius: 15px; 
+  text-align: center; 
 }
 
-.app-logo { width: 70px; height: auto; margin-bottom: 5px; border-radius: 50%; }
-.header-ads h1 { color: #ffd700; margin: 5px 0; font-size: 1.3rem; }
-.header-ads p { margin: 0; font-size: 0.8rem; color: #aaa; }
-
-.digital-clock-container {
-    background: #050505;
-    padding: 10px;
-    border-radius: 15px;
-    border: 1px solid #333;
-    text-align: center;
+.app-logo { 
+  width: 60px; 
+  height: 60px; 
+  border-radius: 50%; 
 }
 
-.digital-clock {
-    font-family: 'Courier New', monospace;
-    font-size: 3.5rem;
-    color: #39FF14;
-    text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+/* الساعة الرقمية */
+.digital-clock-container { 
+  background: #1a1a1a; 
+  padding: 10px; 
+  border-radius: 15px; 
+  border: 1px solid #333; 
+  text-align: center; 
 }
 
-.ampm-text { color: #ffd700; font-weight: bold; }
-
-.calendar-leaf {
-    background: #fff;
-    border-radius: 15px;
-    overflow: hidden;
-    border: 2px solid #d4af37;
+.digital-clock { 
+  font-family: monospace; 
+  font-size: 3.5rem; 
+  color: #00ffcc; /* أخضر مزرق مريح للعين */
+  direction: ltr; 
+  display: inline-block; 
 }
 
-.leaf-header { background: #800000; color: #fff; font-size: 2.2rem; padding: 10px; font-weight: bold; text-align: center;}
+.ampm-text { 
+  color: #ffd700; 
+  font-weight: bold; 
+}
 
-.leaf-body { display: flex; background: #fff; min-height: 160px; }
-.side-box { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+/* ورقة النتيجة */
+.calendar-leaf { 
+  background: #fafafa; 
+  border-radius: 15px; 
+  overflow: hidden; 
+  border: 2px solid #d4af37; 
+}
+
+.leaf-header { 
+  background: #800000; 
+  color: #fff; 
+  font-size: 1.8rem; 
+  padding: 10px; 
+  text-align: center; 
+  font-weight: bold; 
+}
+
+.leaf-body { 
+  display: flex; 
+  min-height: 140px; 
+  align-items: center; 
+  background: #fff; 
+}
+
+.side-box { 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  color: #333; 
+}
+
 .hijri { border-left: 1px solid #eee; }
 
-.date-num {
-    font-size: 75px !important;
-    font-weight: 900;
-    color: #1a237e !important; /* الكحلي الملكي */
-    line-height: 1;
+.date-num { 
+  font-size: 60px; 
+  font-weight: 900; 
+  color: #004d40; /* أخضر غامق مريح */
+  line-height: 1; 
 }
 
-.month-name { font-size: 22px !important; font-weight: bold; color: #333; margin-top: 5px; }
-
-.year-footer { background: #f1f1f1; color: #000; padding: 5px; font-weight: bold; text-align: center; }
-
-.countdown-banner {
-    background: #000;
-    color: #39FF14;
-    font-size: 1.3rem;
-    font-weight: bold;
-    padding: 12px;
-    border: 2px solid #39FF14;
-    border-radius: 10px;
-    text-align: center;
+.month-name { 
+  font-size: 18px; 
+  font-weight: bold; 
 }
 
-/* مستعرض الشهور */
-.calendar-explorer {
-    background: #fff;
-    border-radius: 15px;
-    padding: 10px;
-    color: #333;
-    border: 1px solid #d4af37;
+.year-footer { 
+  background: #e0e0e0; 
+  color: #000; 
+  padding: 5px; 
+  text-align: center; 
+  font-weight: bold; 
 }
 
-.explorer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #800000;
-    color: #fff;
-    padding: 5px 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
+/* العد التنازلي */
+.countdown-banner { 
+  background: #1a1a1a; 
+  color: #00ffcc; 
+  font-size: 1.1rem; 
+  font-weight: bold; 
+  padding: 12px; 
+  border: 1px solid #00ffcc; 
+  border-radius: 10px; 
+  text-align: center; 
 }
 
-.nav-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+/* التقويم */
+.calendar-explorer { 
+  background: #fafafa; 
+  border-radius: 15px; 
+  padding: 10px; 
+  color: #333; 
+  border: 1px solid #d4af37; 
+  cursor: pointer; 
+}
 
-.grid-header { display: grid; grid-template-columns: repeat(7, 1fr); font-weight: bold; text-align: center; color: #800000; padding-bottom: 5px; }
+.explorer-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  background: #800000; 
+  color: #fff; 
+  padding: 8px; 
+  border-radius: 8px; 
+}
 
-.days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.nav-btn { 
+  background: #5a0000; 
+  border: none; 
+  color: white; 
+  padding: 5px 10px; 
+  border-radius: 4px; 
+  cursor: pointer; 
+}
 
-.day-card { border: 1px solid #eee; padding: 5px 0; border-radius: 4px; display: flex; flex-direction: column; }
-.day-card .m-day { font-weight: bold; color: #1a237e; font-size: 1rem; }
-.day-card .h-day { font-size: 0.7rem; color: #d4af37; }
-.day-card.today { background: #fff9c4; border: 1.5px solid #800000; }
+.explorer-body { display: none; padding-top: 10px; }
+.calendar-explorer.active .explorer-body { display: block; }
+
+.grid-header { 
+  display: grid; 
+  grid-template-columns: repeat(7, 1fr); 
+  font-weight: bold; 
+  text-align: center; 
+  color: #800000; 
+  font-size: 0.8rem; 
+}
+
+.days-grid { 
+  display: grid; 
+  grid-template-columns: repeat(7, 1fr); 
+  gap: 4px; 
+}
+
+.day-card { 
+  border: 1px solid #eee; 
+  padding: 5px 0; 
+  border-radius: 4px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+}
+
+.day-card.today { 
+  background: #fff9c4; 
+  border: 1.2px solid #800000; 
+}
+
+.m-day { font-weight: bold; color: #004d40; }
+.h-day { font-size: 0.65rem; color: #d4af37; }
