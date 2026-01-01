@@ -1,196 +1,97 @@
-body {
-  background: #121212;
-  color: #f5f5f5;
-  margin: 0;
-  padding: 10px 0;
-  display: flex;
-  justify-content: center;
-  font-family: sans-serif;
-  direction: rtl;
+:root { --gold: #d4af37; --dark-bg: #121212; --card-bg: #1a1a1a; --text: #f5f5f5; }
+body { background: var(--dark-bg); color: var(--text); margin: 0; padding: 10px 0; display: flex; justify-content: center; font-family: 'Segoe UI', sans-serif; direction: rtl; }
+.container { width: 95%; max-width: 450px; display: flex; flex-direction: column; gap: 15px; }
+
+/* اللوجو والساعة */
+.header-ads { background: #1e1e1e; padding: 15px; border: 1px solid var(--gold); border-radius: 20px; text-align: center; }
+.app-logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); background: #fff; margin-bottom: 5px; }
+.digital-clock-container { background: var(--card-bg); padding: 15px; border-radius: 20px; text-align: center; border: 1px solid #333; }
+.digital-clock { font-family: monospace; font-size: 3rem; color: #00ffcc; text-shadow: 0 0 10px rgba(0,255,204,0.5); }
+
+/* الروزنامة والألوان الديناميكية */
+.calendar-leaf { background: #fff; border-radius: 20px; overflow: hidden; border: 3px solid var(--gold); }
+.leaf-header { background: #800000; color: #fff; font-size: 1.5rem; padding: 10px; text-align: center; transition: 0.3s; }
+.leaf-body { display: flex; min-height: 140px; align-items: center; background: #fff; transition: 0.3s; }
+.side-box { flex: 1; display: flex; flex-direction: column; align-items: center; color: #333; }
+.date-num { font-size: 3.5rem; font-weight: 900; color: #004d40; line-height: 1; }
+.hijri { border-left: 2px solid #eee; }
+.year-footer { background: #eee; color: #555; text-align: center; padding: 5px; font-weight: bold; }
+
+/* ثيم رمضان */
+.ramadan-theme .leaf-header { background: #1b5e20 !important; }
+.ramadan-theme .leaf-body { background: #e8f5e9 !important; }
+.day-card.ramadan-day { background: #c8e6c9 !important; color: #1b5e20; border-color: #4caf50; }
+
+/* ثيم العيد */
+.eid-theme .leaf-header { background: #c2185b !important; }
+.eid-theme .leaf-body { background: #fce4ec !important; }
+.day-card.eid-day { background: #f8bbd0 !important; color: #880e4f; border-color: #e91e63; font-weight: bold; }
+
+/* مواقيت الصلاة */
+.prayer-times-card { background: var(--card-bg); border: 1px solid #333; border-radius: 15px; padding: 12px; }
+.prayer-grid { display: flex; justify-content: space-around; }
+.prayer-item { text-align: center; }
+.prayer-item span { display: block; color: #bbb; font-size: 0.7rem; }
+.prayer-item b { color: #00ffcc; font-size: 0.85rem; font-family: monospace; }
+
+/* الجدول */
+.calendar-explorer { background: #fff; border-radius: 15px; overflow: hidden; border: 1px solid var(--gold); color: #333; }
+.explorer-header { background: #800000; color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 10px; }
+.nav-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 5px 15px; cursor: pointer; border-radius: 5px; }
+.grid-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f0f0f0; font-size: 0.75rem; color: #800000; padding: 5px 0; }
+.days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 5px; }
+.day-card { aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid #eee; border-radius: 4px; font-size: 0.85rem; }
+.day-card.today { background: #fff9c4; border: 2px solid #800000; font-weight: bold; }
+
+/* المشاركة */
+.share-container { padding: 10px; background: #f9f9f9; }
+.share-btn { background: #1b5e20; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.countdown-banner { background: #1a1a1a; color: #ffd700; padding: 10px; text-align: center; font-weight: bold; border-top: 1px solid #333; font-size: 0.9rem; }
+
+
+
+/* مواقيت الصلاة (خط واضح جداً) */
+.prayer-item b {
+    font-size: 1.3rem !important; /* تكبير وقت الصلاة */
+    color: #00ffcc;
+    text-shadow: 0 0 5px rgba(0,255,204,0.3);
 }
 
-.container {
-  width: 95%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.prayer-item span {
+    font-size: 0.9rem !important;
+    color: #ffd700;
+    font-weight: bold;
 }
 
-.header-ads {
-  background: #1e1e1e;
-  padding: 10px;
-  border: 1px solid #d4af37;
-  border-radius: 15px;
-  text-align: center;
-}
-
-.app-logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: contain;
-}
-
-.digital-clock-container {
-  background: #1a1a1a;
-  padding: 10px;
-  border-radius: 15px;
-  border: 1px solid #333;
-  text-align: center;
-}
-
-.digital-clock {
-  font-family: monospace;
-  font-size: 3.5rem;
-  color: #00ffcc;
-  direction: ltr;
-  display: inline-block;
-}
-
-.ampm-text {
-  color: #ffd700;
-  font-weight: bold;
-}
-
-.calendar-leaf {
-  background: #fafafa;
-  border-radius: 15px;
-  overflow: hidden;
-  border: 2px solid #d4af37;
-}
-
-.leaf-header {
-  background: #800000;
-  color: #fff;
-  font-size: 1.8rem;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.leaf-body {
-  display: flex;
-  min-height: 140px;
-  align-items: center;
-  background: #fff;
-}
-
-.side-box {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #333;
-}
-
-.hijri {
-  border-left: 1px solid #eee;
-}
-
-.date-num {
-  font-size: 60px;
-  font-weight: 900;
-  color: #004d40;
-  line-height: 1;
-}
-
-.month-name {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.year-footer {
-  background: #e0e0e0;
-  color: #000;
-  padding: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.countdown-banner {
-  background: #1a1a1a;
-  color: #00ffcc;
-  font-size: 1.1rem;
-  font-weight: bold;
-  padding: 12px;
-  border: 1px solid #00ffcc;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.calendar-explorer {
-  background: #fafafa;
-  border-radius: 15px;
-  padding: 10px;
-  color: #333;
-  border: 1px solid #d4af37;
-  cursor: pointer;
-}
-
-.explorer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #800000;
-  color: #fff;
-  padding: 8px;
-  border-radius: 8px;
-}
-
-.nav-btn {
-  background: #5a0000;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.explorer-body {
-  display: none;
-  padding-top: 10px;
-}
-
-.calendar-explorer.active .explorer-body {
-  display: block;
-}
-
-.grid-header {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  font-weight: bold;
-  text-align: center;
-  color: #800000;
-  font-size: 0.8rem;
-}
-
-.days-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-}
-
+/* تنسيق خانة الجدول (ميلادي + هجري) */
 .day-card {
-  border: 1px solid #eee;
-  padding: 5px 0;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
 }
 
-.day-card.today {
-  background: #fff9c4;
-  border: 1.2px solid #800000;
+.m-num { 
+    font-size: 1.1rem; 
+    font-weight: bold; 
+    color: #333; 
 }
 
-.m-day {
-  font-weight: bold;
-  color: #004d40;
+.h-num { 
+    font-size: 0.75rem; 
+    color: #888; 
+    margin-top: -2px; 
 }
 
-.h-day {
-  font-size: 0.65rem;
-  color: #d4af37;
-}
+/* ثيمات الاحتفال لورقة النتيجة */
+.ramadan-theme .leaf-header { background: #1b5e20 !important; }
+.ramadan-theme .leaf-body { background: #e8f5e9 !important; }
+
+.eid-theme .leaf-header { background: #c2185b !important; }
+.eid-theme .leaf-body { background: #fce4ec !important; }
+
+/* تلوين أيام المناسبات في الجدول */
+.day-card.ramadan-day { background-color: #c8e6c9 !important; }
+.day-card.eid-day { background-color: #f8bbd0 !important; }
+
