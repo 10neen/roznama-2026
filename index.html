@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>نتيجة الصعيدي 2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,42 +16,56 @@
         </div>
 
         <div class="digital-clock-container">
-            <div class="digital-clock" id="digital">00:00:00</div>
+            <div id="clock" class="digital-clock">00:00:00</div>
             <div id="ampm" class="ampm-text">--</div>
         </div>
 
-        <div class="calendar-leaf">
-            <div class="leaf-header" id="day-name">--</div>
-            <div class="leaf-body">
-                <div class="side-box hijri" id="hijri-date">
-                    <div class="date-num">--</div>
-                    <div class="month-name">--</div>
+        <div id="mainLeaf" class="calendar-leaf">
+            <div id="dayName" class="leaf-header">--</div>
+            <div id="leafBody" class="leaf-body">
+                <div class="side-box">
+                    <span id="mDay" class="date-num">--</span>
+                    <span id="mMonth" class="month-name">--</span>
                 </div>
-                <div class="side-box gregorian" id="gregorian-date">
-                    <div class="date-num">--</div>
-                    <div class="month-name">--</div>a
+                <div class="side-box hijri">
+                    <span id="hDay" class="date-num">--</span>
+                    <span id="hMonth" class="month-name">--</span>
                 </div>
             </div>
-            <div class="year-footer">٢٠٢٦ م</div>
+            <div class="year-footer">2026 م / 1447 - 1448 هـ</div>
         </div>
 
-        <div class="countdown-banner" id="countdown-banner">جارِ الحساب...</div>
-
-        <div class="calendar-explorer" id="toggleCalendar">
-            <div class="explorer-header">
-                <button id="prevMonth" class="nav-btn">◀</button>
-                <h3 id="currentViewMonth">يناير ٢٠٢٦</h3>
-                <button id="nextMonth" class="nav-btn">▶</button>
+        <div class="prayer-times-card">
+            <div class="prayer-header">مواقيت الصلاة (القاهرة والجيزة)</div>
+            <div class="prayer-grid">
+                <div class="prayer-item"><span>الفجر</span><b id="fajr">--:--</b></div>
+                <div class="prayer-item"><span>الظهر</span><b id="dhuhr">--:--</b></div>
+                <div class="prayer-item"><span>العصر</span><b id="asr">--:--</b></div>
+                <div class="prayer-item"><span>المغرب</span><b id="maghrib">--:--</b></div>
+                <div class="prayer-item"><span>العشاء</span><b id="isha">--:--</b></div>
             </div>
-            <div class="explorer-body">
-                <div class="grid-header">
-                    <span>س</span><span>ح</span><span>ن</span><span>ث</span><span>ر</span><span>خ</span><span>ج</span>
-                </div>
-                <div id="daysGrid" class="days-grid"></div>
+        </div>
+
+        <div id="eventBanner" class="countdown-banner" style="display: none;"></div>
+
+        <div class="calendar-explorer">
+            <div class="explorer-header">
+                <button class="nav-btn" id="prevMonth">◀</button>
+                <span id="explorerTitle">يناير 2026</span>
+                <button class="nav-btn" id="nextMonth">▶</button>
+            </div>
+            <div class="grid-header">
+                <div>سبت</div><div>أحد</div><div>إثن</div><div>ثلا</div><div>أرب</div><div>خمي</div><div>جمع</div>
+            </div>
+            <div id="daysGrid" class="days-grid"></div>
+            
+            <div class="share-container">
+                <button id="shareBtn" class="share-btn">
+                    <span>📤</span> مشاركة التطبيق مع الأصدقاء
+                </button>
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
