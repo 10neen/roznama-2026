@@ -1,7 +1,7 @@
 // إحداثيات بشتيل - الجيزة
 const LAT = 30.07; const LNG = 31.21;
 
-// مصفوفة المناسبات لعام 2026 (تلوين مستمر طوال فترة المناسبة)
+// مصفوفة المناسبات لعام 2026
 const holidays = [
     { name: "شهر رمضان المبارك", d: 18, m: 2, y: 2026, type: "ramadan", duration: 30 },
     { name: "عيد الفطر المبارك", d: 20, m: 3, y: 2026, type: "eid", duration: 3 },
@@ -13,17 +13,17 @@ const holidays = [
 const monthsAr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 const weekDays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
+// دالة لتحديث الساعة
 function updateApp() {
     const now = new Date();
     
-    // 1. تحديث الساعة (خط كبير)
     let h = now.getHours();
     const m = now.getMinutes().toString().padStart(2, '0');
     const s = now.getSeconds().toString().padStart(2, '0');
     document.getElementById('clock').innerText = `${h % 12 || 12}:${m}:${s}`;
     document.getElementById('ampm').innerText = h >= 12 ? "مساءً" : "صباحاً";
 
-    // 2. تلوين الورقة حسب المناسبة (احتفال كامل)
+    // تلوين الورقة حسب المناسبة
     const todayStr = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const currentEvent = holidays.find(ev => {
         const start = new Date(ev.y, ev.m - 1, ev.d);
@@ -36,19 +36,19 @@ function updateApp() {
     
     mainLeaf.className = 'calendar-leaf';
     if (currentEvent) {
-        mainLeaf.classList.add(currentEvent.type + '-theme'); // إضافة ثيم رمضان أو العيد
+        mainLeaf.classList.add(currentEvent.type + '-theme');
         banner.style.display = 'block';
         banner.innerText = currentEvent.name;
     } else {
         banner.style.display = 'none';
     }
 
-    // 3. ملء بيانات الورقة الرئيسية
+    // ملء بيانات الورقة الرئيسية
     document.getElementById('dayName').innerText = weekDays[now.getDay()];
     document.getElementById('mDay').innerText = now.getDate();
     document.getElementById('mMonth').innerText = monthsAr[now.getMonth()];
 
-    // التاريخ الهجري الرئيسي بدقة أم القرى
+    // التاريخ الهجري
     const hDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma', {day:'numeric', month:'long'}).format(now);
     const hParts = hDate.split(' ');
     document.getElementById('hDay').innerText = hParts[0];
@@ -75,7 +75,6 @@ function renderCalendar() {
     for(let d=1; d<=daysInMonth; d++) {
         const currentCheck = new Date(year, month, d);
         
-        // حساب اليوم الهجري لهذا المربع الصغير
         const hijriDay = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma', {day:'numeric'}).format(currentCheck);
         
         const event = holidays.find(ev => {
@@ -85,7 +84,7 @@ function renderCalendar() {
         });
 
         let cls = "day-card";
-        if (event) cls += ` ${event.type}-day`; // تلوين الخانة (أخضر لرمضان، وردي للعيد)
+        if (event) cls += ` ${event.type}-day`;
         if (new Date().toDateString() === currentCheck.toDateString()) cls += " today";
         
         grid.innerHTML += `
@@ -96,10 +95,10 @@ function renderCalendar() {
     }
 }
 
-// دالة الصلاة (نفس معادلاتك الدقيقة)
+// دالة الصلاة
 function calculatePrayers(date) {
     const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
-    const tz = (date.getMonth() > 3 && date.getMonth() < 10) ? 3 : 2; 
+    const tz = (date.getMonth() > 3 && date.getMonth() < 10) ? 3 : 2;
     const gamma = 2 * Math.PI / 365 * (dayOfYear - 1);
     const eqtime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma));
     const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma);
@@ -133,5 +132,3 @@ document.getElementById('shareBtn').onclick = () => {
 setInterval(updateApp, 1000);
 updateApp();
 renderCalendar();
-
-
