@@ -1,38 +1,26 @@
-const CACHE_NAME = 'saidi-cache-v3'; // غيرنا الإصدار عشان نجبر المتصفح يحدث الكاش
+const cacheName = 'saidi-roznama-2026';
 const assets = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
-  '/manifest.json',
-  '/saidi-logo.png'
+  './',
+  './index.html',
+  './style.css',
+  './script.js',
+  './saidi-logo.png'
 ];
 
-// تثبيت الكاش
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
+// تثبيت ملفات الموقع في ذاكرة الهاتف
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(cacheName).then(cache => {
       return cache.addAll(assets);
     })
   );
-  self.skipWaiting();
 });
 
-// تفعيل وتنظيف الكاش القديم
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-      );
+// جلب الملفات من الكاش في حال عدم وجود إنترنت
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(res => {
+      return res || fetch(e.request);
     })
-  );
-  self.clients.claim();
-});
-
-// جلب الملفات
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
