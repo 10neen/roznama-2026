@@ -95,3 +95,38 @@ body { background: var(--dark-bg); color: var(--text); margin: 0; padding: 10px 
 .day-card.ramadan-day { background-color: #c8e6c9 !important; }
 .day-card.eid-day { background-color: #f8bbd0 !important; }
 
+/* العد التنازلي */
+.countdown-style {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 10px;
+    margin: 10px auto;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+/* تحسين استجابة المربعات على الموبايل */
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px; /* تقليل الفراغات لتناسب الشاشات الصغيرة */
+    padding: 5px;
+}
+
+.day-card {
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+/* لجعل الزر يعمل بشكل أفضل على الموبايل */
+#shareBtn {
+    cursor: pointer;
+    touch-action: manipulation;
+}
