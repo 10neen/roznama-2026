@@ -16,26 +16,43 @@ const holidays = [
 const monthsAr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 const weekDays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
-// دالة مساعدة للحصول على التاريخ الهجري بدقة وضمان عدم التحول لميلادي
+/**
+ * دالة التحويل الحسابي القاطع (تمنع التحول لميلادي نهائياً)
+ */
 function getHijriDetails(date) {
-    // إضافة الإزاحة اليدوية
-    const adjusted = new Date(date);
-    adjusted.setDate(date.getDate() + HIJRI_OFFSET);
+    let jdDate = new Date(date);
+    // إضافة الإزاحة اليدوية للتصحيح
+    jdDate.setDate(jdDate.getDate() + HIJRI_OFFSET);
 
-    // استخدام nu-latn لضمان أرقام إنجليزية/لاتينية لسهولة التعامل، و ar-SA للأسماء العربية
-    const formatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma-nu-latn', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    });
-    
-    const parts = formatter.formatToParts(adjusted);
-    let res = { day: "", month: "" };
-    parts.forEach(p => {
-        if (p.type === 'day') res.day = p.value;
-        if (p.type === 'month') res.month = p.value;
-    });
-    return res;
+    let day = jdDate.getDate();
+    let month = jdDate.getMonth() + 1;
+    let year = jdDate.getFullYear();
+
+    if (month < 3) {
+        year -= 1;
+        month += 12;
+    }
+
+    let a = Math.floor(year / 100);
+    let b = 2 - a + Math.floor(a / 4);
+    let jd = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + b - 1524.5;
+
+    let z = Math.floor(jd + 0.5);
+    let cyc = Math.floor((z - 1948439.5) / 10631);
+    let l = z - 1948439.5 - cyc * 10631;
+    let j = Math.floor((l - 0.5) / 354.36667);
+    let m = Math.floor((l - Math.floor(j * 354.36667) + 28.5) / 29.5);
+    let d = Math.floor(l - Math.floor(j * 354.36667) - Math.floor((m - 1) * 29.5) + 0.5);
+
+    const islamicMonths = [
+        "محرم", "صفر", "ربيع الأول", "ربيع الآخر", "جمادى الأولى", "جمادى الآخرة",
+        "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"
+    ];
+
+    return {
+        day: d,
+        month: islamicMonths[m - 1]
+    };
 }
 
 function updateApp() {
@@ -48,7 +65,7 @@ function updateApp() {
     document.getElementById('clock').innerText = `${h % 12 || 12}:${m}:${s}`;
     document.getElementById('ampm').innerText = h >= 12 ? "مساءً" : "صباحاً";
 
-    // 2. التحقق من المناسبات
+    // 2. التحقق من المناسبات (تلوين الثيم)
     const todayStr = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const currentEvent = holidays.find(ev => {
         const start = new Date(ev.y, ev.m - 1, ev.d);
@@ -70,12 +87,12 @@ function updateApp() {
         }
     }
 
-    // 3. ملء بيانات الورقة الرئيسية
+    // 3. ملء بيانات الورقة الرئيسية (ميلادي)
     document.getElementById('dayName').innerText = weekDays[now.getDay()];
     document.getElementById('mDay').innerText = now.getDate();
     document.getElementById('mMonth').innerText = monthsAr[now.getMonth()];
 
-    // التاريخ الهجري الرئيسي مع التصحيح
+    // 4. التاريخ الهجري الرئيسي (من الدالة الحسابية)
     const hData = getHijriDetails(now);
     document.getElementById('hDay').innerText = hData.day;
     document.getElementById('hMonth').innerText = hData.month;
@@ -101,7 +118,7 @@ function renderCalendar() {
     for(let d=1; d<=daysInMonth; d++) {
         const currentCheck = new Date(year, month, d);
         
-        // حساب اليوم الهجري لهذا المربع مع التصحيح
+        // حساب اليوم الهجري لهذا المربع
         const hData = getHijriDetails(currentCheck);
         
         const event = holidays.find(ev => {
@@ -122,7 +139,7 @@ function renderCalendar() {
     }
 }
 
-// دالة الصلاة (كما هي)
+// دالة حساب مواقيت الصلاة
 function calculatePrayers(date) {
     const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
     const tz = (date.getMonth() > 3 && date.getMonth() < 10) ? 3 : 2; 
@@ -147,10 +164,11 @@ function calculatePrayers(date) {
     document.getElementById("isha").innerText = format(transit + getHA(-17.5));
 }
 
-// المستمعات (Listeners)
+// أزرار التحكم
 document.getElementById('prevMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() - 1); renderCalendar(); };
 document.getElementById('nextMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() + 1); renderCalendar(); };
 
+// بدء التشغيل
 setInterval(updateApp, 1000);
 updateApp();
 renderCalendar();
