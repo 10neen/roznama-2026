@@ -1,46 +1,41 @@
-const cacheName = 'saidi-roznama-2026';
+// غيرنا الاسم لـ v2 عشان الموبايل يعرف إن فيه تحديث جديد
+const cacheName = 'saidi-roznama-v2'; 
 const assets = [
   './',
   './index.html',
   './style.css',
   './script.js',
   './saidi-logo.png',
-  './manifest.json', // إضافة ملف الـ manifest
+  './manifest.json',
 ];
 
-// تثبيت ملفات الموقع في ذاكرة الهاتف
+// تثبيت ملفات الموقع
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
       return cache.addAll(assets);
     })
   );
+  // سطر مهم عشان التحديث يشتغل فوراً
+  self.skipWaiting(); 
 });
 
-// جلب الملفات من الكاش في حال عدم وجود إنترنت
+// جلب الملفات (نفس الكود بتاعك)
 self.addEventListener('fetch', e => {
   e.respondWith(
     caches.match(e.request).then(res => {
-      // إذا كان الملف في الكاش، يتم إرجاعه مباشرة، وإذا لم يكن يتم تحميله من الإنترنت
-      return res || fetch(e.request).then(networkRes => {
-        // تحديث الكاش عند الحصول على استجابة جديدة
-        caches.open(cacheName).then(cache => {
-          cache.put(e.request, networkRes.clone());
-        });
-        return networkRes;
-      });
+      return res || fetch(e.request);
     })
   );
 });
 
-// تحديث الكاش عند تفعيل الخدمة
+// تنظيف الكاش القديم
 self.addEventListener('activate', e => {
-  const cacheWhitelist = [cacheName];
   e.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cache => {
-          if (!cacheWhitelist.includes(cache)) {
+          if (cache !== cacheName) {
             return caches.delete(cache);
           }
         })
@@ -48,4 +43,3 @@ self.addEventListener('activate', e => {
     })
   );
 });
-
