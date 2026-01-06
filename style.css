@@ -1,132 +1,371 @@
-:root { --gold: #d4af37; --dark-bg: #121212; --card-bg: #1a1a1a; --text: #f5f5f5; }
-body { background: var(--dark-bg); color: var(--text); margin: 0; padding: 10px 0; display: flex; justify-content: center; font-family: 'Segoe UI', sans-serif; direction: rtl; }
+:root { 
+    --gold: #d4af37; 
+    --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f1d27b 50%, #b8860b 100%);
+    --dark-bg: #0f172a; /* لون أزرق غامق جداً أفخم من الأسود */
+    --card-bg: #1e293b; 
+    --text: #f8fafc; 
+    --coptic-color: #92400e; /* لون بني ملكي */
+}
+
+body { 
+    background: var(--dark-bg); 
+    color: var(--text); 
+    margin: 0; 
+    padding: 10px 0; 
+    display: flex; 
+    justify-content: center; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    direction: rtl; 
+}
+
 .container { width: 95%; max-width: 450px; display: flex; flex-direction: column; gap: 15px; }
 
-/* اللوجو والساعة */
-.header-ads { background: #1e1e1e; padding: 15px; border: 1px solid var(--gold); border-radius: 20px; text-align: center; }
-.app-logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); background: #fff; margin-bottom: 5px; }
-.digital-clock-container { background: var(--card-bg); padding: 15px; border-radius: 20px; text-align: center; border: 1px solid #333; }
-.digital-clock { font-family: monospace; font-size: 3rem; color: #00ffcc; text-shadow: 0 0 10px rgba(0,255,204,0.5); }
-
-/* الروزنامة والألوان الديناميكية */
-.calendar-leaf { background: #fff; border-radius: 20px; overflow: hidden; border: 3px solid var(--gold); }
-.leaf-header { background: #800000; color: #fff; font-size: 1.5rem; padding: 10px; text-align: center; transition: 0.3s; }
-.leaf-body { display: flex; min-height: 140px; align-items: center; background: #fff; transition: 0.3s; }
-.side-box { flex: 1; display: flex; flex-direction: column; align-items: center; color: #333; }
-.date-num { font-size: 3.5rem; font-weight: 900; color: #004d40; line-height: 1; }
-.hijri { border-left: 2px solid #eee; }
-.year-footer { background: #eee; color: #555; text-align: center; padding: 5px; font-weight: bold; }
-
-/* ثيم رمضان */
-.ramadan-theme .leaf-header { background: #1b5e20 !important; }
-.ramadan-theme .leaf-body { background: #e8f5e9 !important; }
-.day-card.ramadan-day { background: #c8e6c9 !important; color: #1b5e20; border-color: #4caf50; }
-
-/* ثيم العيد */
-.eid-theme .leaf-header { background: #c2185b !important; }
-.eid-theme .leaf-body { background: #fce4ec !important; }
-.day-card.eid-day { background: #f8bbd0 !important; color: #880e4f; border-color: #e91e63; font-weight: bold; }
-
-/* مواقيت الصلاة */
-.prayer-times-card { background: var(--card-bg); border: 1px solid #333; border-radius: 15px; padding: 12px; }
-.prayer-grid { display: flex; justify-content: space-around; }
-.prayer-item { text-align: center; }
-.prayer-item span { display: block; color: #bbb; font-size: 0.7rem; }
-.prayer-item b { color: #00ffcc; font-size: 0.85rem; font-family: monospace; }
-
-/* الجدول */
-.calendar-explorer { background: #fff; border-radius: 15px; overflow: hidden; border: 1px solid var(--gold); color: #333; }
-.explorer-header { background: #800000; color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 10px; }
-.nav-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 5px 15px; cursor: pointer; border-radius: 5px; }
-.grid-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; background: #f0f0f0; font-size: 0.75rem; color: #800000; padding: 5px 0; }
-.days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 5px; }
-.day-card { aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid #eee; border-radius: 4px; font-size: 0.85rem; }
-.day-card.today { background: #fff9c4; border: 2px solid #800000; font-weight: bold; }
-
-/* المشاركة */
-.share-container { padding: 10px; background: #f9f9f9; }
-.share-btn { background: #1b5e20; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-.countdown-banner { background: #1a1a1a; color: #ffd700; padding: 10px; text-align: center; font-weight: bold; border-top: 1px solid #333; font-size: 0.9rem; }
-
-
-
-/* مواقيت الصلاة (خط واضح جداً) */
-.prayer-item b {
-    font-size: 1.3rem !important; /* تكبير وقت الصلاة */
-    color: #00ffcc;
-    text-shadow: 0 0 5px rgba(0,255,204,0.3);
+/* اللوجو والساعة - تأثير زجاجي (Glassmorphism) */
+.header-ads { 
+    background: var(--card-bg); 
+    padding: 20px; 
+    border: 2px solid #d4af37; 
+    border-radius: 25px; 
+    text-align: center; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-.prayer-item span {
-    font-size: 0.9rem !important;
-    color: #ffd700;
+.app-logo { 
+    width: 85px; height: 85px; 
+    border-radius: 50%; 
+    border: 3px solid var(--gold); 
+    background: #fff; 
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.digital-clock-container { 
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    padding: 20px; 
+    border-radius: 20px; 
+    text-align: center; 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 15px rgba(0,255,204,0.1);
+}
+
+.digital-clock { 
+    font-family: 'Courier New', monospace; 
+    font-size: 3.5rem; 
+    color: #00ffcc; 
+    text-shadow: 0 0 15px rgba(0,255,204,0.6); 
+    letter-spacing: 2px;
+}
+
+/* ورقة النتيجة - محاكاة ورق النتيجة الحقيقي */
+.calendar-leaf { 
+    background: #fff; 
+    border-radius: 25px; 
+    overflow: hidden; 
+    border: 4px solid var(--gold);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.leaf-header { 
+    background: linear-gradient(90deg, #800000 0%, #b91c1c 100%); 
+    color: #fff; 
+    font-size: 1.8rem; 
+    padding: 12px; 
+    text-align: center; 
     font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
-/* تنسيق خانة الجدول (ميلادي + هجري) */
+.leaf-body { 
+    background: #ffffff;
+    padding: 20px 0;
+}
+
+/* التاريخ القبطي المطور */
+.coptic-row {
+    width: 85%;
+    margin-top: 15px;
+    padding: 10px;
+    border: 2px dashed var(--coptic-color);
+    border-radius: 15px;
+    background-color: #fffbf0;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.coptic-row::before {
+    content: "📜";
+    position: absolute;
+    top: -12px;
+    right: 10px;
+    background: #fffbf0;
+    padding: 0 5px;
+}
+
+/* مواقيت الصلاة - كروت بتأثير النيون */
+.prayer-times-card { 
+    background: var(--card-bg); 
+    border: 1px solid rgba(255,255,255,0.05); 
+    border-radius: 20px; 
+    padding: 15px; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.prayer-grid { display: flex; justify-content: space-around; gap: 5px; }
+
+.prayer-item span { 
+    display: block; 
+    color: var(--gold); 
+    font-size: 0.9rem; 
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.prayer-item b { 
+    color: #00ffcc; 
+    font-size: 1.3rem; 
+    text-shadow: 0 0 8px rgba(0,255,204,0.4);
+}
+
+/* العداد التنازلي - فخامة الذهب */
+.countdown-style {
+    background: var(--gold-gradient);
+    border-radius: 20px;
+    padding: 12px;
+    margin: 10px auto;
+    width: 90%;
+    color: #000;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+    font-size: 1.2rem;
+}
+
+
+/* تنسيق مستكشف الشهور والسنوات (المسطرة) */
+.calendar-explorer {
+    background: #fff;
+    border-radius: 20px;
+    border: 2px solid var(--gold);
+    overflow: hidden;
+    width: 100%; /* تأكد إنه واخد العرض كله */
+    margin-top: 15px;
+}
+
+.explorer-header {
+    background: linear-gradient(90deg, #450a0a 0%, #800000 100%);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+/* إصلاح الجدول المنهار */
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 أعمدة متساوية بالعرض */
+    gap: 2px;
+    padding: 10px;
+    background: #f8f9fa;
+    width: 100%;
+    box-sizing: border-box; /* عشان الـ padding ميطلعهوش بره */
+}
+
+.grid-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    background: #eee;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 8px 0;
+    color: #800000;
+}
+
 .day-card {
+    aspect-ratio: 1/1; /* المربع يكون متساوي الطول والعرض */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    min-height: 45px; /* يمنع انكماش المربع */
 }
 
-.m-num { 
-    font-size: 1.1rem; 
-    font-weight: bold; 
-    color: #333; 
-}
 
-.h-num { 
-    font-size: 0.75rem; 
-    color: #888; 
-    margin-top: -2px; 
-}
 
-/* ثيمات الاحتفال لورقة النتيجة */
-.ramadan-theme .leaf-header { background: #1b5e20 !important; }
-.ramadan-theme .leaf-body { background: #e8f5e9 !important; }
 
-.eid-theme .leaf-header { background: #c2185b !important; }
-.eid-theme .leaf-body { background: #fce4ec !important; }
-
-/* تلوين أيام المناسبات في الجدول */
-.day-card.ramadan-day { background-color: #c8e6c9 !important; }
-.day-card.eid-day { background-color: #f8bbd0 !important; }
-
-/* العد التنازلي */
-.countdown-style {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 10px;
-    margin: 10px auto;
-    width: 90%;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    font-weight: bold;
-    color: #2c3e50;
-    font-size: 1.1rem;
-}
-
-/* تحسين استجابة المربعات على الموبايل */
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 4px; /* تقليل الفراغات لتناسب الشاشات الصغيرة */
+    gap: 1px; /* خطوط رفيعة بين الأيام */
+    background: #eee; /* لون الفواصل */
     padding: 5px;
 }
 
 .day-card {
-    min-height: 50px;
+    background: #fff;
+    aspect-ratio: 1/1.2;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-size: 0.8rem;
+    position: relative;
+    transition: 0.2s;
+}
+
+/* تلوين المناسبات الإسلامية 2026 */
+.day-card.ramadan-day { background-color: #e8f5e9 !important; border: 1px solid #4caf50; }
+.day-card.ramadan-day .m-num { color: #1b5e20; }
+
+.day-card.eid-day { background-color: #fce4ec !important; border: 1px solid #e91e63; }
+.day-card.eid-day .m-num { color: #880e4f; }
+
+.day-card.hajj-day { background-color: #fff3e0 !important; border: 1px solid #ff9800; }
+
+.day-card.today {
+    background: #fff9c4 !important;
+    border: 2px solid #800000;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+}
+
+.m-num { font-size: 1.1rem; font-weight: bold; }
+.h-num { font-size: 0.7rem; color: #666; margin-top: 2px; }
+
+
+
+.explorer-header { 
+    background: linear-gradient(90deg, #450a0a 0%, #800000 100%);
+    padding: 15px;
+}
+
+.day-card.today { 
+    background: #fef08a; 
+    border: 2.5px solid #800000; 
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+/* زر المشاركة - نبض خفيف للفت الانتباه */
+.share-btn { 
+    background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+    transition: 0.3s;
+}
+
+.share-btn:active { transform: scale(0.95); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.leaf-body > div { animation: fadeIn 0.8s ease-out; }
+
+/* تأمين عرض الجدول ومنع انكماشه */
+.calendar-explorer {
+    width: 100%;
+    min-width: 320px; /* لضمان عدم الانكماش في الشاشات الصغيرة */
+    background: #fff;
+    border-radius: 20px;
+    border: 2px solid var(--gold);
+    overflow: hidden;
+    margin-top: 15px;
+    display: block !important; /* لضمان أنه ليس flex مخفي */
+}
+
+.days-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important; /* 7 أعمدة صريحة */
+    gap: 2px;
+    padding: 10px;
+    background: #f0f0f0;
+}
+
+.grid-header {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    text-align: center;
+    background: #eee;
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: #800000;
+}
+
+/* --- تنسيق عام لبطاقة اليوم --- */
+.day-card {
+    position: relative;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* الأرقام في الأيام العادية: أسود واضح */
+.day-card .m-num {
+    color: #1a1a1a !important; 
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+.day-card .h-num {
+    color: #555 !important;
     font-size: 0.9rem;
 }
 
-/* لجعل الزر يعمل بشكل أفضل على الموبايل */
-#shareBtn {
-    cursor: pointer;
-    touch-action: manipulation;
+/* الأيام المظللة: الأرقام تتحول للأبيض الناصع فوراً */
+.day-card.highlighted .m-num,
+.day-card.highlighted .h-num {
+    color: #ffffff !important; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* لزيادة الوضوح */
 }
+
+/* ألوان التظليل للمناسبات */
+.day-card.ramadan-day { background-color: #1b5e20 !important; } /* أخضر رمضاني */
+.day-card.eid-day { background-color: #b71c1c !important; }     /* أحمر للعيد */
+.day-card.hajj-day { background-color: #f57c00 !important; }    /* برتقالي للعشر من ذي الحجة */
+.day-card.event-day { background-color: #1565c0 !important; }   /* أزرق للمناسبات الأخرى */
+
+/* اليوم الحالي */
+.day-card.today {
+    border: 2px solid #2c3e50 !important;
+    background-color: #fffde7 !important;
+}
+
+/* إخفاء مربعات الأيام الفارغة */
+.day-card.empty { border: none; background: transparent; }
+
+
+
+/* حركة نبض بسيطة للنص الاحتفالي */
+#occasionLabel {
+    display: block;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-top: 5px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+#occasionLabel {
+    display: block;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+.day-card.highlighted {
+    border-radius: 8px; /* يعطي شكل دائري خفيف للمربعات الملونة */
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2); /* يعطي عمق للون */
+}
+
