@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>نتيجة الصعيدي 2026</title>
     <link rel="stylesheet" href="style.css">
-    <!-- إضافة الـ manifest -->
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -23,17 +22,34 @@
         </div>
 
         <div id="mainLeaf" class="calendar-leaf">
-            <div id="dayName" class="leaf-header">--</div>
-            <div id="leafBody" class="leaf-body">
-                <div class="side-box">
-                    <span id="mDay" class="date-num">--</span>
-                    <span id="mMonth" class="month-name">--</span>
+            <div id="dayName" class="card-header leaf-header">
+                --
+                <span id="occasionLabel"></span>
+            </div>
+            
+            <div id="leafBody" class="leaf-body" style="display: flex; flex-direction: column; align-items: center; padding: 20px 0; background: #fff;">
+                
+                <div style="display: flex; justify-content: space-around; width: 100%; align-items: center; margin-bottom: 15px;">
+                    <div class="side-box">
+                        <span id="mDay" class="date-num" style="font-size: 3rem; color: #b91c1c; font-weight: bold; display: block;">--</span>
+                        <span id="mMonth" class="month-name" style="font-size: 1.2rem; color: #374151;">--</span>
+                    </div>
+                    
+                    <div class="side-box">
+                        <span id="hDay" class="date-num" style="font-size: 3rem; color: #1e40af; font-weight: bold; display: block;">--</span>
+                        <span id="hMonth" class="month-name" style="font-size: 1.2rem; color: #374151;">--</span>
+                    </div>
                 </div>
-                <div class="side-box hijri">
-                    <span id="hDay" class="date-num">--</span>
-                    <span id="hMonth" class="month-name">--</span>
+
+                <div class="coptic-row" style="width: 85%; padding: 8px; border: 2px dashed #b45309; border-radius: 12px; background-color: #fffbeb; text-align: center;">
+                    <span style="font-size: 0.85rem; color: #b45309; display: block; margin-bottom: 2px; font-weight: bold;">التقويم القبطي</span>
+                    <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                        <span id="copticDay" style="font-size: 1.6rem; font-weight: bold; color: #8b4513;">--</span>
+                        <span id="copticMonth" style="font-size: 1.6rem; font-weight: bold; color: #8b4513;">--</span>
+                    </div>
                 </div>
             </div>
+
             <div class="year-footer">2026 م / 1447 - 1448 هـ</div>
         </div>
 
@@ -48,12 +64,10 @@
             </div>
         </div>
 
-<div id="countdown-container" class="countdown-style">
-    <span id="nextEventName"></span>: 
-    <span id="daysLeft"></span> يوم
-</div>
-
-        <div id="eventBanner" class="countdown-banner" style="display: none;"></div>
+        <div id="countdown-container" class="countdown-style">
+            <span id="nextEventName"></span>: 
+            <span id="daysLeft"></span> يوم
+        </div>
 
         <div class="calendar-explorer">
             <div class="explorer-header">
@@ -68,12 +82,12 @@
             
             <div class="share-container">
                 <button id="shareBtn" class="share-btn">
-                    <span>📤</span> مشاركة التطبيق مع الأصدقاء
+                    <span>📤</span> مشاركة النتيجة مع الأصدقاء
                 </button>
             </div>
         </div>
     </div>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>
