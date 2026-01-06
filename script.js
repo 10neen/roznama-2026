@@ -61,3 +61,4 @@ function updateApp() {
 
 setInterval(updateApp, 1000);
 updateApp();
+
