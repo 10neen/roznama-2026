@@ -29,18 +29,32 @@ function getCopticDate(date) {
     return { d: day, m: months[monthIdx] };
 }
 
+
 function getHijriDate(date) {
     let adj = new Date(date);
     adj.setDate(date.getDate() + HIJRI_OFFSET);
     try {
-        const fmt = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma-nu-latn', {day:'numeric', month:'long'});
+        // 'ar-SA' تخبر المتصفح باللغة العربية
+        // 'u-ca-islamic-uma' تجبره على التقويم الهجري الرسمي
+        // 'nu-latn' تضمن ظهور الأرقام 1, 2, 3 لسهولة القراءة
+        const fmt = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma-nu-latn', {
+            day: 'numeric', 
+            month: 'long'
+        });
+
         const parts = fmt.formatToParts(adj);
+        
         return { 
             d: parts.find(p => p.type === 'day').value, 
             m: parts.find(p => p.type === 'month').value 
         };
-    } catch(e) { return { d: "--", m: "--" }; }
+    } catch(e) { 
+        return { d: "--", m: "--" }; 
+    }
 }
+
+
+
 
 // --- 3. حساب مواقيت الصلاة بتوقيت القاهرة ---
 
