@@ -1,7 +1,7 @@
 // --- 1. الإعدادات الجغرافية لمدينة القاهرة ---
 const LAT = 30.0444; 
 const LNG = 31.2357;
-let HIJRI_OFFSET = 0; 
+let HIJRI_OFFSET = 0; // لضبط الرؤية الشرعية (مثلاً +1 أو -1)
 
 let viewDate = new Date(2026, 0, 1); 
 
@@ -18,7 +18,7 @@ const holidays = [
 const monthsAr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 const weekDays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
-// --- 2. دوال التواريخ (قبطي، هجري) ---
+// --- 2. دوال التواريخ (قبطي، هجري يدوي ثابت) ---
 
 function getCopticDate(date) {
     const base = new Date(2025, 8, 11);
@@ -29,99 +29,58 @@ function getCopticDate(date) {
     return { d: day, m: months[monthIdx] };
 }
 
-
+// دالة هجرية حسابية لا تعتمد على نظام تشغيل الموبايل (حل مشكلة التحول لميلادي)
 function getHijriDate(date) {
-    let adj = new Date(date);
-    adj.setDate(date.getDate() + HIJRI_OFFSET);
-    try {
-        // 'ar-SA' تخبر المتصفح باللغة العربية
-        // 'u-ca-islamic-uma' تجبره على التقويم الهجري الرسمي
-        // 'nu-latn' تضمن ظهور الأرقام 1, 2, 3 لسهولة القراءة
-        const fmt = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma-nu-latn', {
-            day: 'numeric', 
-            month: 'long'
-        });
-
-        const parts = fmt.formatToParts(adj);
-        
-        return { 
-            d: parts.find(p => p.type === 'day').value, 
-            m: parts.find(p => p.type === 'month').value 
-        };
-    } catch(e) { 
-        return { d: "--", m: "--" }; 
-    }
+    let jd = Math.floor(date.getTime() / 86400000) + 2440588;
+    let l = jd - 1948440 + 10632 + HIJRI_OFFSET;
+    let n = Math.floor((l - 1) / 10631);
+    l = l - 10631 * n + 354;
+    let j = (Math.floor((10985 - l) / 5316)) * (Math.floor((50 * l) / 17719)) + (Math.floor(l / 5670)) * (Math.floor((43 * l) / 15238));
+    l = l - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+    let m = Math.floor((24 * l) / 709);
+    let d = l - Math.floor((709 * m) / 24);
+    const months = ["محرم", "صفر", "ربيع الأول", "ربيع الآخر", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
+    return { d: d, m: months[m - 1] };
 }
 
-
-
-
-// --- 3. حساب مواقيت الصلاة بتوقيت القاهرة ---
+// --- 3. حساب مواقيت الصلاة ---
 
 function calculatePrayers(date) {
     const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
     const getTZ = () => {
-        const m = date.getMonth();
-        if (m > 3 && m < 9) return 3;
-        if (m === 3) return date.getDate() >= 24 ? 3 : 2; 
-        if (m === 9) return date.getDate() <= 29 ? 3 : 2; 
+        const m = date.getMonth() + 1;
+        if (m > 4 && m < 11) return 3; 
+        if (m === 4) return date.getDate() >= 24 ? 3 : 2; 
         return 2;
     };
     const tz = getTZ();
+    const phi = LAT * Math.PI / 180;
     const gamma = 2 * Math.PI / 365 * (dayOfYear - 1);
-    const eqtime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma));
-    const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma);
+    const eqtime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma) - 0.014615 * Math.cos(2*gamma) - 0.040849 * Math.sin(2*gamma));
+    const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma) - 0.006758 * Math.cos(2*gamma) + 0.000907 * Math.sin(2*gamma);
     const transit = 720 - (4 * (LNG - 15 * tz)) + eqtime;
-
     const getHA = (angle) => {
-        const phi = LAT * Math.PI / 180;
         const cosHA = (Math.sin(angle * Math.PI / 180) - Math.sin(phi) * Math.sin(decl)) / (Math.cos(phi) * Math.cos(decl));
         return Math.acos(Math.max(-1, Math.min(1, cosHA))) * 180 / Math.PI * 4;
     };
-
-    const format = (min) => {
-        const h = Math.floor(min / 60) % 12 || 12;
-        const m = Math.floor(min % 60).toString().padStart(2, '0');
-        return `${h}:${m}`;
+    const format = (min, add = 0) => {
+        const total = min + add;
+        let h = Math.floor(total / 60);
+        let m = Math.round(total % 60);
+        if (m === 60) { h++; m = 0; }
+        return `${h % 12 || 12}:${m.toString().padStart(2, '0')}`;
     };
+    const asrAlt = Math.atan(1 / (1 + Math.tan(Math.abs(phi - decl))));
+    const asrHA = getHA(asrAlt * 180 / Math.PI);
 
     document.getElementById("fajr").innerText = format(transit - getHA(-19.5));
     document.getElementById("dhuhr").innerText = format(transit);
-    const asrAngle = 90 - (Math.atan(1 + Math.tan(Math.abs(LAT - (decl * 180 / Math.PI)) * Math.PI / 180)) * 180 / Math.PI);
-    document.getElementById("asr").innerText = format(transit + getHA(asrAngle));
-    document.getElementById("maghrib").innerText = format(transit + getHA(-0.833));
+    document.getElementById("asr").innerText = format(transit + asrHA);
+    document.getElementById("maghrib").innerText = format(transit + getHA(-0.833), 2);
     document.getElementById("isha").innerText = format(transit + getHA(-17.5));
 }
 
-// --- 4. الاحتفالات والسمات الدينيه ---
-
-function celebrateOccasion(now) {
-    const mainCardHeader = document.querySelector('.card-header'); 
-    const occasionLabel = document.getElementById('occasionLabel'); 
-    if(!mainCardHeader || !occasionLabel) return;
-
-    const todayEvent = holidays.find(ev => {
-        return ev.d === now.getDate() && ev.m === (now.getMonth() + 1);
-    });
-
-    if (todayEvent) {
-        if (todayEvent.type === "ramadan") {
-            mainCardHeader.style.background = "linear-gradient(to bottom, #1b5e20, #2e7d32)";
-            occasionLabel.innerText = "🌙 رمضان كريم";
-        } else if (todayEvent.type === "eid") {
-            mainCardHeader.style.background = "linear-gradient(to bottom, #d4af37, #f1c40f)";
-            occasionLabel.innerText = "🎉 عيد مبارك";
-        } else {
-            mainCardHeader.style.background = "linear-gradient(to bottom, #1565c0, #1e88e5)";
-            occasionLabel.innerText = "✨ " + todayEvent.name;
-        }
-    } else {
-        mainCardHeader.style.background = ""; // يرجع للـ CSS الأصلي (الأحمر)
-        occasionLabel.innerText = ""; 
-    }
-}
-
-// --- 5. وظائف التحديث وبناء التقويم ---
+// --- 4. بناء التقويم المتجاوب ---
 
 function renderCalendar() {
     const grid = document.getElementById('daysGrid');
@@ -132,10 +91,12 @@ function renderCalendar() {
     const month = viewDate.getMonth();
     document.getElementById('explorerTitle').innerText = `${monthsAr[month]} ${year}`;
     
-    const firstDay = new Date(year, month, 1).getDay();
+    const firstDay = new Date(year, month, 1).getDay(); 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     
+    // ضبط الإزاحة لتبدأ من يوم "السبت" كأول عمود
     let offset = (firstDay + 1) % 7; 
+    
     for(let i=0; i<offset; i++) grid.innerHTML += `<div class="day-card empty"></div>`;
     
     for(let d=1; d<=daysInMonth; d++) {
@@ -161,14 +122,15 @@ function renderCalendar() {
     }
 }
 
+// --- 5. تحديث التطبيق ---
+
 function updateApp() {
     const now = new Date();
-    // تحديث الساعة
     let h = now.getHours();
+    
     document.getElementById('clock').innerText = `${h % 12 || 12}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
     document.getElementById('ampm').innerText = h >= 12 ? "مساءً" : "صباحاً";
 
-    // تحديث التواريخ الرئيسية
     document.getElementById('mDay').innerText = now.getDate();
     document.getElementById('mMonth').innerText = monthsAr[now.getMonth()];
     document.getElementById('dayName').innerText = weekDays[now.getDay()];
@@ -183,7 +145,7 @@ function updateApp() {
 
     calculatePrayers(now);
     updateCountdown(now);
-    celebrateOccasion(now); // استدعاء دالة الاحتفال
+    celebrateOccasion(now);
 }
 
 function updateCountdown(now) {
@@ -204,41 +166,49 @@ function updateCountdown(now) {
     }
 }
 
+function celebrateOccasion(now) {
+    const mainCardHeader = document.querySelector('.leaf-header'); 
+    const occasionLabel = document.getElementById('occasionLabel'); 
+    if(!mainCardHeader || !occasionLabel) return;
+    const todayEvent = holidays.find(ev => ev.d === now.getDate() && ev.m === (now.getMonth() + 1));
+
+    if (todayEvent) {
+        if (todayEvent.type === "ramadan") mainCardHeader.style.background = "linear-gradient(90deg, #1b5e20, #2e7d32)";
+        else if (todayEvent.type === "eid") mainCardHeader.style.background = "linear-gradient(90deg, #d4af37, #b8860b)";
+        else mainCardHeader.style.background = "linear-gradient(90deg, #1565c0, #1e88e5)";
+        occasionLabel.innerText = todayEvent.name;
+    } else {
+        mainCardHeader.style.background = ""; 
+        occasionLabel.innerText = ""; 
+    }
+}
+
 // المستمعات
 document.getElementById('prevMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() - 1); renderCalendar(); };
 document.getElementById('nextMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() + 1); renderCalendar(); };
 
-// التشغيل الأولي
 setInterval(updateApp, 1000);
 updateApp();
 renderCalendar();
 
+
+
+// ... أي كواد تانية ...
+
+// كود المشاركة (اللي أنت بعته)
 document.getElementById('shareBtn').onclick = function(e) {
-    e.preventDefault(); // منع أي تصرف تاني للزرار
-
-    const title = "نتيجة الصعيدي 2026";
-    const dayName = document.getElementById('dayName').innerText.split('\n')[0];
-    const mDay = document.getElementById('mDay').innerText;
-    const mMonth = document.getElementById('mMonth').innerText;
-    
-    const shareText = `شوف نتيجة النهاردة من نتيجة الصعيدي: اليوم هو ${dayName} ${mDay} ${mMonth}\n`;
-    const url = window.location.href; // رابط موقعك
-
-    // 1. محاولة فتح قائمة المشاركة الرسمية (للموبايل)
+    e.preventDefault();
+    const shareText = `شوف نتيجة النهاردة من نتيجة الصعيدي: ${document.getElementById('dayName').innerText} ${document.getElementById('mDay').innerText} ${document.getElementById('mMonth').innerText}`;
     if (navigator.share) {
-        navigator.share({
-            title: title,
-            text: shareText,
-            url: url
-        }).then(() => {
-            console.log('تمت المشاركة');
-        }).catch((err) => {
-            console.log('تم إلغاء المشاركة');
-        });
-    } 
-    // 2. لو مفيش قائمة مشاركة (زي الكمبيوتر)، نفتح واتساب مباشرة
-    else {
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + url)}`;
-        window.open(whatsappUrl, '_blank'); 
+        navigator.share({ title: "نتيجة الصعيدي 2026", text: shareText, url: window.location.href });
+    } else {
+        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + " " + window.location.href)}`, '_blank');
     }
 };
+
+// كود الربط (اللازم إضافته الآن)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+    });
+}
