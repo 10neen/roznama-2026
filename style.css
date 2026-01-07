@@ -1,7 +1,8 @@
 /* --- 1. الإعدادات الأساسية لضبط الحجم ومنع الهروب --- */
 * {
-    box-sizing: border-box; /* لضمان حساب العرض والارتفاع بدقة */
+    box-sizing: border-box;
     max-width: 100%;
+    -webkit-tap-highlight-color: transparent; /* منع اللون الأزرق عند اللمس في الموبايل */
 }
 
 :root { 
@@ -22,7 +23,7 @@ body {
     justify-content: center; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     direction: rtl; 
-    overflow-x: hidden; /* منع التمرير الجانبي تماماً */
+    overflow-x: hidden;
 }
 
 .container { 
@@ -33,7 +34,7 @@ body {
     gap: 15px; 
 }
 
-/* --- 2. الهيدر والساعة (تأثير زجاجي) --- */
+/* --- 2. الهيدر والساعة --- */
 .header-ads { 
     background: var(--card-bg); 
     padding: 20px; 
@@ -53,7 +54,7 @@ body {
 
 .digital-clock-container { 
     background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    padding: 20px; 
+    padding: 15px; 
     border-radius: 20px; 
     text-align: center; 
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -65,6 +66,7 @@ body {
     color: #00ffcc; 
     text-shadow: 0 0 15px rgba(0,255,204,0.6); 
     letter-spacing: 2px;
+    line-height: 1;
 }
 
 /* --- 3. ورقة النتيجة الرئيسية --- */
@@ -83,6 +85,7 @@ body {
     padding: 12px; 
     text-align: center; 
     font-weight: bold;
+    transition: background 0.5s ease; /* تنعيم تغيير اللون */
 }
 
 .leaf-body { 
@@ -93,20 +96,18 @@ body {
     align-items: center;
 }
 
-/* التاريخ القبطي */
 .coptic-row {
     width: 85%;
     margin-top: 15px;
-    padding: 10px;
+    padding: 8px;
     border: 2px dashed var(--coptic-color);
     border-radius: 15px;
     background-color: #fffbf0;
-    position: relative;
     text-align: center;
     color: #000;
 }
 
-/* --- 4. مواقيت الصلاة (متجاوبة تماماً) --- */
+/* --- 4. مواقيت الصلاة --- */
 .prayer-times-card { 
     background: var(--card-bg); 
     border-radius: 20px; 
@@ -117,10 +118,9 @@ body {
     display: flex; 
     justify-content: space-around; 
     gap: 5px; 
-    flex-wrap: wrap; /* للسماح بالالتفاف في الشاشات الصغيرة جداً */
 }
 
-.prayer-item { text-align: center; min-width: 60px; }
+.prayer-item { text-align: center; }
 
 .prayer-item span { 
     display: block; 
@@ -131,17 +131,16 @@ body {
 
 .prayer-item b { 
     color: #00ffcc; 
-    font-size: 1.2rem; 
+    font-size: 1.1rem; 
 }
 
-/* --- 5. مستكشف الشهور (الجدول) - حلول الحجم والظهور --- */
+/* --- 5. مستكشف الشهور (الجدول) --- */
 .calendar-explorer {
     width: 100%;
     background: #fff;
     border-radius: 20px;
     border: 2px solid var(--gold);
     overflow: hidden;
-    margin-top: 15px;
 }
 
 .explorer-header {
@@ -154,8 +153,8 @@ body {
 }
 
 .grid-header {
-    display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     text-align: center;
     background: #eee;
     padding: 10px 0;
@@ -165,17 +164,15 @@ body {
 }
 
 .days-grid {
-    display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
-    grid-auto-rows: minmax(55px, auto) !important; /* السماح بتمدد الصفوف */
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     gap: 2px;
     padding: 8px;
     background: #f0f0f0;
 }
 
 .day-card {
-    position: relative;
-    aspect-ratio: 1/1; /* مربع متناسق */
+    aspect-ratio: 1/1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -183,49 +180,65 @@ body {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background: #fff;
-    transition: 0.2s;
-    min-height: 55px;
+    cursor: pointer;
+    transition: transform 0.1s;
 }
 
-/* الأرقام */
-.day-card .m-num { color: #1a1a1a !important; font-weight: 800; font-size: 1.1rem; }
-.day-card .h-num { color: #555 !important; font-size: 0.8rem; margin-top: 2px; }
+.day-card:active { transform: scale(0.9); }
 
-/* ألوان المناسبات */
-.day-card.highlighted { box-shadow: inset 0 0 8px rgba(0,0,0,0.2); }
-.day-card.highlighted .m-num, .day-card.highlighted .h-num { color: #fff !important; }
+.day-card .m-num { color: #1a1a1a; font-weight: 800; font-size: 1.1rem; }
+.day-card .h-num { color: #666; font-size: 0.7rem; }
 
-.day-card.ramadan-day { background-color: #1b5e20 !important; }
-.day-card.eid-day     { background-color: #b71c1c !important; }
-.day-card.hajj-day    { background-color: #f57c00 !important; }
-.day-card.event-day   { background-color: #1565c0 !important; }
+/* ألوان المناسبات في الجدول */
+.highlighted { color: #fff !important; }
+.highlighted span { color: #fff !important; }
 
-/* اليوم الحالي */
+.ramadan-day { background-color: #1b5e20 !important; }
+.eid-day     { background-color: #b71c1c !important; }
+.hajj-day    { background-color: #f57c00 !important; }
+.event-day   { background-color: #1565c0 !important; }
+
 .day-card.today {
     background: #fff9c4 !important;
-    border: 2.5px solid #800000 !important;
-    transform: scale(1.05);
-    z-index: 2;
+    border: 2px solid #800000 !important;
+    box-shadow: 0 0 10px rgba(128,0,0,0.2);
 }
 
-/* إخفاء الفارغ */
-.day-card.empty { border: none; background: transparent; }
-
-/* --- 6. الإضافات الجمالية --- */
+/* --- 6. أزرار وأكشن --- */
 .share-btn { 
     background: linear-gradient(135deg, #15803d 0%, #166534 100%);
-    border-radius: 10px;
+    border-radius: 12px;
     color: #fff;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
-    margin-top: 10px;
     cursor: pointer;
+    border: none;
+    width: 100%;
+    font-weight: bold;
+}
+
+.countdown-style {
+    background: #450a0a;
+    color: var(--gold);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* --- 7. التجاوب مع الشاشات الصغيرة --- */
+@media (max-width: 380px) {
+    .digital-clock { font-size: 2.5rem; }
+    .leaf-header { font-size: 1.4rem; }
+    .day-card .m-num { font-size: 0.9rem; }
+    .prayer-item b { font-size: 0.9rem; }
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.05); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.8; }
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.03); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.9; }
 }
 
-#occasionLabel { animation: pulse 2s infinite; font-weight: bold; }
+#occasionLabel { animation: pulse 2s infinite; color: #ffeb3b; }
