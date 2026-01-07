@@ -1,26 +1,25 @@
-// 1. تغيير اسم الكاش (إضافة v2) بيجبر المتصفح يمسح القديم ويحمل الجديد
 const cacheName = 'saidi-roznama-2026-v3'; 
 const assets = [
   './',
   './index.html',
-  './style.css?v=5', // ربطنا نفس الإصدار اللي في الـ HTML
-  './script.js?v=5',
+  './style.css',  // شلنا الـ v=5 من هنا
+  './script.js',   // شلنا الـ v=5 من هنا
   './saidi-logo.png',
   './manifest.json',
+  './prayer_data.js', // مهم جداً تضيف ملفات البيانات هنا عشان يشتغل أوفلاين
+  './hijri_data.js'
 ];
 
-// تثبيت الملفات
 self.addEventListener('install', e => {
-  // skipWaiting بيخلي التحديث يشتغل فوراً أول ما يترفع
   self.skipWaiting();
   e.waitUntil(
     caches.open(cacheName).then(cache => {
+      // استخدمنا cache.addAll والأسماء لازم تكون مطابقة للملفات في الفولدر
       return cache.addAll(assets);
     })
   );
 });
 
-// تفعيل الكاش الجديد ومسح القديم تماماً
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => {
@@ -31,8 +30,6 @@ self.addEventListener('activate', e => {
   );
 });
 
-// جلب الملفات (استراتيجية: الشبكة أولاً ثم الكاش)
-// دي أفضل عشان التحديثات تظهر فوراً لو في إنترنت
 self.addEventListener('fetch', e => {
   e.respondWith(
     fetch(e.request).catch(() => {
@@ -40,4 +37,3 @@ self.addEventListener('fetch', e => {
     })
   );
 });
-
