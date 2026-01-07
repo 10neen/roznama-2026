@@ -82,6 +82,9 @@ function calculatePrayers(date) {
 
 // --- 4. بناء التقويم المتجاوب ---
 
+
+
+
 function renderCalendar() {
     const grid = document.getElementById('daysGrid');
     if (!grid) return;
@@ -94,7 +97,7 @@ function renderCalendar() {
     const firstDay = new Date(year, month, 1).getDay(); 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     
-    // ضبط الإزاحة لتبدأ من يوم "السبت" كأول عمود
+    // المعادلة دي بتخلي اليوم الأول يروح لمكانه الصح (لو السبت يبقى أول خانة)
     let offset = (firstDay + 1) % 7; 
     
     for(let i=0; i<offset; i++) grid.innerHTML += `<div class="day-card empty"></div>`;
@@ -121,6 +124,11 @@ function renderCalendar() {
             </div>`;
     }
 }
+
+
+
+
+
 
 // --- 5. تحديث التطبيق ---
 
