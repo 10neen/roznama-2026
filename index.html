@@ -4,57 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>نتيجة الصعيدي 2026</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=5">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div class="container">
         <div class="header-ads">
             <img src="saidi-logo.png" alt="لوجو الصعيدي" class="app-logo">
-            <p>إهداء من</p>
-            <h1>معرض الصعيدي للأدوات الصحية</h1>
-            <p>بشتيل - إمبابة - الجيزة</p>
+            <p style="margin: 5px 0; font-size: 0.9rem; color: var(--gold);">إهداء من</p>
+            <h1 style="font-size: 1.3rem; margin: 5px 0;">معرض الصعيدي للأدوات الصحية</h1>
+            <p style="margin: 5px 0; font-size: 0.85rem;">بشتيل - إمبابة - الجيزة</p>
         </div>
 
         <div class="digital-clock-container">
             <div id="clock" class="digital-clock">00:00:00</div>
-            <div id="ampm" class="ampm-text">--</div>
+            <div id="ampm" style="color: var(--gold); font-weight: bold;">--</div>
         </div>
 
         <div id="mainLeaf" class="calendar-leaf">
-            <div id="dayName" class="card-header leaf-header">
+            <div id="dayName" class="leaf-header">
                 --
-                <span id="occasionLabel"></span>
+                <small id="occasionLabel" style="display: block; font-size: 0.9rem;"></small>
             </div>
             
-            <div id="leafBody" class="leaf-body" style="display: flex; flex-direction: column; align-items: center; padding: 20px 0; background: #fff;">
-                
-                <div style="display: flex; justify-content: space-around; width: 100%; align-items: center; margin-bottom: 15px;">
-                    <div class="side-box">
-                        <span id="mDay" class="date-num" style="font-size: 3rem; color: #b91c1c; font-weight: bold; display: block;">--</span>
-                        <span id="mMonth" class="month-name" style="font-size: 1.2rem; color: #374151;">--</span>
+            <div class="leaf-body">
+                <div style="display: flex; justify-content: space-around; width: 100%; margin-bottom: 10px;">
+                    <div style="text-align: center;">
+                        <span id="mDay" style="font-size: 3.5rem; color: #b91c1c; font-weight: bold; display: block; line-height: 1;">--</span>
+                        <span id="mMonth" style="font-size: 1.2rem; color: #333;">--</span>
                     </div>
-                    
-                    <div class="side-box">
-                        <span id="hDay" class="date-num" style="font-size: 3rem; color: #1e40af; font-weight: bold; display: block;">--</span>
-                        <span id="hMonth" class="month-name" style="font-size: 1.2rem; color: #374151;">--</span>
+                    <div style="text-align: center;">
+                        <span id="hDay" style="font-size: 3.5rem; color: #1e40af; font-weight: bold; display: block; line-height: 1;">--</span>
+                        <span id="hMonth" style="font-size: 1.2rem; color: #333;">--</span>
                     </div>
                 </div>
 
-                <div class="coptic-row" style="width: 85%; padding: 8px; border: 2px dashed #b45309; border-radius: 12px; background-color: #fffbeb; text-align: center;">
-                    <span style="font-size: 0.85rem; color: #b45309; display: block; margin-bottom: 2px; font-weight: bold;">التقويم القبطي</span>
-                    <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                        <span id="copticDay" style="font-size: 1.6rem; font-weight: bold; color: #8b4513;">--</span>
-                        <span id="copticMonth" style="font-size: 1.6rem; font-weight: bold; color: #8b4513;">--</span>
-                    </div>
+                <div class="coptic-row">
+                    <span style="font-size: 0.8rem; color: #92400e; font-weight: bold; display: block;">التقويم القبطي</span>
+                    <span id="copticDay" style="font-size: 1.5rem; font-weight: bold;">--</span>
+                    <span id="copticMonth" style="font-size: 1.5rem; font-weight: bold;">--</span>
                 </div>
             </div>
-
-            <div class="year-footer">2026 م / 1447 - 1448 هـ</div>
+            <div style="background: #f8f9fa; text-align: center; padding: 5px; font-size: 0.8rem; color: #666; border-top: 1px solid #eee;">
+                2026 م / 1447 - 1448 هـ
+            </div>
         </div>
 
         <div class="prayer-times-card">
-            <div class="prayer-header">مواقيت الصلاة (القاهرة والجيزة)</div>
+            <div style="text-align: center; color: var(--gold); margin-bottom: 10px; font-weight: bold; font-size: 0.9rem;">مواقيت الصلاة (القاهرة والجيزة)</div>
             <div class="prayer-grid">
                 <div class="prayer-item"><span>الفجر</span><b id="fajr">--:--</b></div>
                 <div class="prayer-item"><span>الظهر</span><b id="dhuhr">--:--</b></div>
@@ -65,29 +62,30 @@
         </div>
 
         <div id="countdown-container" class="countdown-style">
-            <span id="nextEventName"></span>: 
-            <span id="daysLeft"></span> يوم
+            <span id="nextEventName">تحميل...</span>: 
+            <span id="daysLeft">--</span> يوم
         </div>
 
         <div class="calendar-explorer">
             <div class="explorer-header">
-                <button class="nav-btn" id="prevMonth">◀</button>
-                <span id="explorerTitle">يناير 2026</span>
-                <button class="nav-btn" id="nextMonth">▶</button>
+                <button id="prevMonth" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">◀</button>
+                <span id="explorerTitle">-- 2026</span>
+                <button id="nextMonth" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">▶</button>
             </div>
             <div class="grid-header">
                 <div>سبت</div><div>أحد</div><div>إثن</div><div>ثلا</div><div>أرب</div><div>خمي</div><div>جمع</div>
             </div>
-            <div id="daysGrid" class="days-grid"></div>
+            <div id="daysGrid" class="days-grid">
+                </div>
             
-            <div class="share-container">
-                <button id="shareBtn" class="share-btn">
+            <div style="padding: 15px;">
+                <button id="shareBtn" class="share-btn" style="width: 100%; border: none; font-family: inherit; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
                     <span>📤</span> مشاركة النتيجة مع الأصدقاء
                 </button>
             </div>
         </div>
     </div>
 
-    <script src="script.js?v=4"></script>
+    <script src="script.js?v=5"></script>
 </body>
 </html>
