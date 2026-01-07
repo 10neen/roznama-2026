@@ -1,5 +1,5 @@
 // 1. تغيير اسم الكاش (إضافة v2) بيجبر المتصفح يمسح القديم ويحمل الجديد
-const cacheName = 'saidi-roznama-2026-v2'; 
+const cacheName = 'saidi-roznama-2026-v3'; 
 const assets = [
   './',
   './index.html',
@@ -40,3 +40,4 @@ self.addEventListener('fetch', e => {
     })
   );
 });
+
