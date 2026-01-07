@@ -1,45 +1,42 @@
-// غيرنا الاسم لـ v2 عشان الموبايل يعرف إن فيه تحديث جديد
-const cacheName = 'saidi-roznama-v2'; 
+// 1. تغيير اسم الكاش (إضافة v2) بيجبر المتصفح يمسح القديم ويحمل الجديد
+const cacheName = 'saidi-roznama-2026-v2'; 
 const assets = [
   './',
   './index.html',
-  './style.css',
-  './script.js',
+  './style.css?v=5', // ربطنا نفس الإصدار اللي في الـ HTML
+  './script.js?v=5',
   './saidi-logo.png',
   './manifest.json',
 ];
 
-// تثبيت ملفات الموقع
+// تثبيت الملفات
 self.addEventListener('install', e => {
+  // skipWaiting بيخلي التحديث يشتغل فوراً أول ما يترفع
+  self.skipWaiting();
   e.waitUntil(
     caches.open(cacheName).then(cache => {
       return cache.addAll(assets);
     })
   );
-  // سطر مهم عشان التحديث يشتغل فوراً
-  self.skipWaiting(); 
 });
 
-// جلب الملفات (نفس الكود بتاعك)
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(res => {
-      return res || fetch(e.request);
+// تفعيل الكاش الجديد ومسح القديم تماماً
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== cacheName).map(key => caches.delete(key))
+      );
     })
   );
 });
 
-// تنظيف الكاش القديم
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cache => {
-          if (cache !== cacheName) {
-            return caches.delete(cache);
-          }
-        })
-      );
+// جلب الملفات (استراتيجية: الشبكة أولاً ثم الكاش)
+// دي أفضل عشان التحديثات تظهر فوراً لو في إنترنت
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    fetch(e.request).catch(() => {
+      return caches.match(e.request);
     })
   );
 });
