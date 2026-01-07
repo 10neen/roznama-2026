@@ -5,8 +5,8 @@
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#121212",
-  "theme_color": "#800000",
+  "background_color": "#0f172a", 
+  "theme_color": "#0f172a", 
   "icons": [
     {
       "src": "saidi-logo.png",
@@ -22,7 +22,7 @@
       "src": "saidi-logo.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ]
 }
