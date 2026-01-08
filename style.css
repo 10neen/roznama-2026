@@ -242,3 +242,21 @@ body {
 }
 
 #occasionLabel { animation: pulse 2s infinite; color: #ffeb3b; }
+
+
+
+/* تأثير التوهج للصلاة القادمة */
+.next-prayer-highlight {
+    background: rgba(255, 215, 0, 0.15) !important; /* لون ذهبي خفيف خلف الكارت */
+    border: 1px solid #ffd700 !important;
+    border-radius: 8px;
+    transform: scale(1.05); /* تكبير بسيط للتميز */
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* تلوين اسم الصلاة نفسها بالذهبي */
+.next-prayer-highlight span {
+    color: #ffd700 !important;
+    font-weight: bold;
+}
