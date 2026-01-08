@@ -1,25 +1,27 @@
-const cacheName = 'saidi-roznama-2026-v3'; 
+const cacheName = 'saidi-roznama-2026-v4'; 
 const assets = [
   './',
   './index.html',
-  './style.css',  // شلنا الـ v=5 من هنا
-  './script.js',   // شلنا الـ v=5 من هنا
+  './style.css',
+  './script.js',
   './saidi-logo.png',
   './manifest.json',
-  './prayer_data.js', // مهم جداً تضيف ملفات البيانات هنا عشان يشتغل أوفلاين
+  './prayer_data.js',
   './hijri_data.js'
 ];
 
+// 1. مرحلة التثبيت: تخزين الملفات الأساسية
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(
     caches.open(cacheName).then(cache => {
-      // استخدمنا cache.addAll والأسماء لازم تكون مطابقة للملفات في الفولدر
+      console.log('تم حفظ ملفات النتيجة في الذاكرة المؤقتة');
       return cache.addAll(assets);
     })
   );
 });
 
+// 2. مرحلة التفعيل: تنظيف الكاش القديم
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => {
@@ -30,10 +32,25 @@ self.addEventListener('activate', e => {
   );
 });
 
+// 3. جلب البيانات: استراتيجية ذكية للعمل بدون إنترنت
 self.addEventListener('fetch', e => {
   e.respondWith(
-    fetch(e.request).catch(() => {
-      return caches.match(e.request);
+    caches.match(e.request).then(cacheRes => {
+      // لو الملف موجود في الكاش (الذاكرة) هاته، لو مش موجود روح حمله من الإنترنت
+      return cacheRes || fetch(e.request).then(fetchRes => {
+        return caches.open(cacheName).then(cache => {
+          // حفظ الملفات الجديدة تلقائياً (مثل أي صور يضيفها المستخدم لاحقاً)
+          if (e.request.url.startsWith('http')) {
+             cache.put(e.request.url, fetchRes.clone());
+          }
+          return fetchRes;
+        });
+      });
+    }).catch(() => {
+      // لو مفيش إنترنت والملف مش في الكاش، ممكن تظهر صفحة "أوفلاين" هنا
+      if (e.request.url.indexOf('.html') > -1) {
+        return caches.match('./index.html');
+      }
     })
   );
 });
