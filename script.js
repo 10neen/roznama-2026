@@ -4,7 +4,9 @@ const LNG = 31.2357;
 let HIJRI_OFFSET = 0; 
 let viewDate = new Date(2026, 0, 1); 
 
+
 const holidays = [
+    // --- مناسبات إسلامية 2026 ---
     { name: "الإسراء والمعراج", d: 16, m: 1, y: 2026, type: "event", duration: 1 }, 
     { name: "ليلة النصف من شعبان", d: 3, m: 2, y: 2026, type: "event", duration: 1 },
     { name: "بداية شهر رمضان", d: 18, m: 2, y: 2026, type: "ramadan", duration: 30 },
@@ -15,7 +17,21 @@ const holidays = [
     { name: "رأس السنة الهجرية 1448", d: 16, m: 6, y: 2026, type: "event", duration: 1 },
     { name: "يوم عاشوراء", d: 25, m: 6, y: 2026, type: "event", duration: 1 },
     { name: "المولد النبوي الشريف", d: 25, m: 8, y: 2026, type: "event", duration: 1 },
+
+    // --- إجازات قومية ومناسبات عامة 2026 ---
+    { name: "عيد الميلاد المجيد", d: 7, m: 1, y: 2026, type: "event", duration: 1 },
+    { name: "ثورة 25 يناير / عيد الشرطة", d: 25, m: 1, y: 2026, type: "event", duration: 1 },
+    { name: "عيد الأم", d: 21, m: 3, y: 2026, type: "event", duration: 1 },
+    { name: "شم النسيم", d: 13, m: 4, y: 2026, type: "event", duration: 1 },
+    { name: "عيد تحرير سيناء", d: 25, m: 4, y: 2026, type: "event", duration: 1 },
+    { name: "عيد العمال", d: 1, m: 5, y: 2026, type: "event", duration: 1 },
+    { name: "ثورة 30 يونيو", d: 30, m: 6, y: 2026, type: "event", duration: 1 },
+    { name: "ثورة 23 يوليو", d: 23, m: 7, y: 2026, type: "event", duration: 1 },
+    { name: "عيد القوات المسلحة (6 أكتوبر)", d: 6, m: 10, y: 2026, type: "event", duration: 1 },
+    { name: "عيد ميلاد معرض الصعيدي", d: 25, m: 10, y: 2026, type: "event", duration: 1 }
 ];
+
+
 
 const monthsAr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 const weekDays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
@@ -194,9 +210,11 @@ document.getElementById('prevMonth').onclick = () => { viewDate.setMonth(viewDat
 document.getElementById('nextMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() + 1); renderCalendar(); };
 document.getElementById('shareBtn').onclick = (e) => {
     e.preventDefault();
-    const shareText = `نتيجة الصعيدي: ${document.getElementById('dayName').innerText} ${document.getElementById('mDay').innerText} ${document.getElementById('mMonth').innerText}`;
-    if (navigator.share) navigator.share({ title: "نتيجة الصعيدي 2026", text: shareText, url: window.location.href });
+    const shareText = `نتيجة الصحابة: ${document.getElementById('dayName').innerText} ${document.getElementById('mDay').innerText} ${document.getElementById('mMonth').innerText}`;
+    if (navigator.share) navigator.share({ title: "نتيجة الصحابة 2026", text: shareText, url: window.location.href });
     else window.open(`https://wa.me/?text=${encodeURIComponent(shareText + " " + window.location.href)}`, '_blank');
+
+
 };
 
 setInterval(updateApp, 1000);
