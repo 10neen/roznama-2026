@@ -4,7 +4,6 @@ const LNG = 31.2357;
 let HIJRI_OFFSET = 0; 
 let viewDate = new Date(2026, 0, 1); 
 
-
 const holidays = [
     // --- مناسبات إسلامية 2026 ---
     { name: "الإسراء والمعراج", d: 16, m: 1, y: 2026, type: "event", duration: 1 }, 
@@ -30,8 +29,6 @@ const holidays = [
     { name: "عيد القوات المسلحة (6 أكتوبر)", d: 6, m: 10, y: 2026, type: "event", duration: 1 },
     { name: "عيد ميلاد معرض الصعيدي", d: 25, m: 10, y: 2026, type: "event", duration: 1 }
 ];
-
-
 
 const monthsAr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 const weekDays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
@@ -66,8 +63,6 @@ function formatTime12(timeStr) {
     hours = hours % 12 || 12;
     return `${hours}:${minutes} ${ampm}`;
 }
-
-
 
 function calculatePrayers(date) {
     const m = date.getMonth() + 1;
@@ -140,12 +135,6 @@ function updatePrayerCountdown(prayerTime, name) {
 }
 
 
-
-
-
-
-
-
 // --- 4. بناء التقويم ---
 function renderCalendar() {
     const grid = document.getElementById('daysGrid');
@@ -210,17 +199,33 @@ function updateApp(forcedDate = null) {
 function updateCountdown(now) {
     let nextEvent = null;
     let minDiff = Infinity;
+
     holidays.forEach(ev => {
         const evDate = new Date(ev.y, ev.m - 1, ev.d);
         const diff = evDate - now;
-        if (diff > 0 && diff < minDiff) { minDiff = diff; nextEvent = ev; }
+        if (diff > 0 && diff < minDiff) { 
+            minDiff = diff; 
+            nextEvent = ev; 
+        }
     });
-    if (nextEvent) {
+
+    // هنا التعديل: بنخلي السكريبت يدور على كل الأماكن اللي فيها الاسم ده
+    const eventContainers = document.querySelectorAll('#nextEventName'); 
+    
+    if (nextEvent && eventContainers.length > 0) {
         const days = Math.ceil(minDiff / (1000 * 60 * 60 * 24));
-        document.getElementById('nextEventName').innerText = `المتبقي على ${nextEvent.name}`;
-        document.getElementById('daysLeft').innerText = days === 0 ? "اليوم!" : days;
+        // النص اللي هيظهر
+        const alertText = `⚠️ تنبيه: متبقي ${days} يوم على ${nextEvent.name}`;
+        
+        eventContainers.forEach(container => {
+            container.innerHTML = alertText;
+            container.style.display = "block"; // بنأكد عليه يظهر فوق الستايل
+            container.style.visibility = "visible";
+            container.style.color = "#d4c06a"; // لون ذهبي عشان يبان في الستايل الأخضر
+        });
     }
 }
+
 
 // دالة الاحتفالات والتلوين
 function celebrateSaidiBirthday(now) {
@@ -256,7 +261,6 @@ document.getElementById('shareBtn').onclick = (e) => {
     if (navigator.share) navigator.share({ title: "نتيجة الصحابة 2026", text: shareText, url: window.location.href });
     else window.open(`https://wa.me/?text=${encodeURIComponent(shareText + " " + window.location.href)}`, '_blank');
 
-
 };
 
 setInterval(updateApp, 1000);
@@ -267,9 +271,7 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
 }
 
-
 // --- 6. ميزة الحكمة اليومية (365 يوم) ---
-
 
 const wisdoms = [
     // --- (الـ 50 الأولى) ---
@@ -323,8 +325,6 @@ const wisdoms = [
     "ثق بحدسك اليوم، فالله يلهم عباده الصالحين طرق الخير.",
     "كن حامداً، شاكراً، مستغفراً.. وراقب كيف ستتغير حياتك.",
     "خاتمة الرسائل: أنت في رعاية الله، وهذا يكفيك لتواجه أي شيء.",
-
-    // --- (الـ 50 الجديدة) ---
     "ما أغلقه الله في وجهك، كان سيؤذيك لو فُتح.. ثق في رحمته الخفية.",
     "اليوم بانتظارك موقف بسيط سيثبت لك أن الله معك ويسمع مناجاتك.",
     "لا ترهق قلبك بالمستقبل، فمن رعاك وأنت طفل لن ينساك وأنت شاب.",
@@ -378,8 +378,6 @@ const wisdoms = [
 ];
 
 
-
-
 function displayDailyWisdom() {
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 0);
@@ -420,9 +418,6 @@ function displayDailyWisdom() {
         typeWriter();
     }
 }
-
-
-
 
 // تشغيل الدالة فوراً
 displayDailyWisdom();
