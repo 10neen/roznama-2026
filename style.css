@@ -1,94 +1,94 @@
-/* --- 1. الإعدادات الأساسية لضبط الحجم ومنع الهروب --- */
+/* 🌟 إعدادات عامة */
 * {
     box-sizing: border-box;
     max-width: 100%;
-    -webkit-tap-highlight-color: transparent; /* منع اللون الأزرق عند اللمس في الموبايل */
+    -webkit-tap-highlight-color: transparent;
 }
 
-:root { 
-    --gold: #d4af37; 
-    --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f1d27b 50%, #b8860b 100%);
-    --dark-bg: #0f172a; 
-    --card-bg: #1e293b; 
-    --text: #f8fafc; 
-    --coptic-color: #92400e; 
+:root {
+    --gold: #e4c674;
+    --gold-hard: #d4af37;
+    --royal-dark: #0b0f1c;
+    --royal-mid: #13203c;
+    --card-bg: rgba(30, 41, 59, 0.65);
+    --text: #f8fafc;
+    --coptic-color: #9c4a12;
 }
 
-body { 
-    background: var(--dark-bg); 
-    color: var(--text); 
-    margin: 0; 
-    padding: 10px 0; 
-    display: flex; 
-    justify-content: center; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    direction: rtl; 
+/* 🌌 خلفية ملكية */
+body {
+    margin: 0;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--royal-dark) 0%, #000 100%);
+    direction: rtl;
     overflow-x: hidden;
 }
 
-.container { 
-    width: 95%; 
-    max-width: 450px; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 15px; 
+/* 🧱 ضبط الحاوية الأساسية */
+.container {
+    width: 92%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 auto;
 }
 
-/* --- 2. الهيدر والساعة --- */
-.header-ads { 
-    background: var(--card-bg); 
-    padding: 20px; 
-    border: 2px solid var(--gold); 
-    border-radius: 25px; 
-    text-align: center; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+/* 🪟 خلفية زجاجية موحدة */
+.header-ads,
+.prayer-times-card,
+#daily-wisdom-container,
+.digital-clock-container {
+    width: 100%;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(212,175,55,0.35);
+    border-radius: 20px;
+    padding: 15px;
+    text-align: center;
+    color: var(--text);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
 }
 
-.app-logo { 
-    width: 85px; height: 85px; 
-    border-radius: 50%; 
-    border: 3px solid var(--gold); 
-    background: #fff; 
-    margin-bottom: 10px;
+/* 🕰 ديجيتال كلوك */
+.digital-clock-container {
+    background: linear-gradient(180deg, var(--royal-mid) 0%, var(--royal-dark) 100%);
 }
-
-.digital-clock-container { 
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    padding: 15px; 
-    border-radius: 20px; 
-    text-align: center; 
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.digital-clock { 
-    font-family: 'Courier New', monospace; 
-    font-size: 3.2rem; 
-    color: #00ffcc; 
-    text-shadow: 0 0 15px rgba(0,255,204,0.6); 
+.digital-clock {
+    font-family: 'Courier New', monospace;
+    font-size: 3.2rem;
+    color: #00ffcc;
+    text-shadow: 0 0 15px rgba(0,255,204,0.6);
     letter-spacing: 2px;
     line-height: 1;
 }
 
-/* --- 3. ورقة النتيجة الرئيسية --- */
-.calendar-leaf { 
-    background: #fff; 
-    border-radius: 25px; 
-    overflow: hidden; 
+/* 📜 ورقة النتيجة */
+.calendar-leaf {
+    background: #fff;
+    border-radius: 25px;
+    overflow: hidden;
     border: 4px solid var(--gold);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.45);
 }
 
-.leaf-header { 
-    background: linear-gradient(90deg, #800000 0%, #b91c1c 100%); 
-    color: #fff; 
-    font-size: 1.8rem; 
-    padding: 12px; 
-    text-align: center; 
+.leaf-header {
+    background: linear-gradient(90deg, #600000 0%, #a30d0d 100%);
+    color: #fff;
+    font-size: 1.8rem;
+    padding: 12px;
+    text-align: center;
     font-weight: bold;
-    transition: background 0.5s ease; /* تنعيم تغيير اللون */
+    transition: background 0.4s ease;
 }
 
-.leaf-body { 
+.leaf-body {
     background: #ffffff;
     padding: 20px 0;
     display: flex;
@@ -107,156 +107,110 @@ body {
     color: #000;
 }
 
-/* --- 4. مواقيت الصلاة --- */
-.prayer-times-card { 
-    background: var(--card-bg); 
-    border-radius: 20px; 
-    padding: 15px; 
+/* ⏱ مواقيت الصلاة */
+.prayer-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
 }
-
-.prayer-grid { 
-    display: flex; 
-    justify-content: space-around; 
-    gap: 5px; 
-}
-
-.prayer-item { text-align: center; }
-
-.prayer-item span { 
-    display: block; 
-    color: var(--gold); 
-    font-size: 0.8rem; 
+.prayer-item span {
+    display: block;
+    color: var(--gold-hard);
+    font-size: 0.8rem;
     font-weight: bold;
 }
-
-.prayer-item b { 
-    color: #00ffcc; 
-    font-size: 1.1rem; 
+.prayer-item b {
+    color: #00ffcc;
+    font-size: 1.1rem;
 }
 
-/* --- 5. مستكشف الشهور (الجدول) --- */
+
+
+/* --- 1. إعادة إحياء جدول الشهور والمناسبات --- */
 .calendar-explorer {
     width: 100%;
-    background: #fff;
+    background: #ffffff !important; /* خلفية بيضاء صريحة للوضوح */
     border-radius: 20px;
-    border: 2px solid var(--gold);
+    border: 3px solid var(--gold);
     overflow: hidden;
+    margin-top: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
 .explorer-header {
-    background: linear-gradient(90deg, #450a0a 0%, #800000 100%);
+    background: linear-gradient(90deg, #450a0a, #800000);
     color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
 }
 
+/* إصلاح شبكة الأيام لتكون مسطرة */
 .grid-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    background: #eee;
-    padding: 10px 0;
-    font-weight: bold;
-    font-size: 0.75rem;
+    background: #f1f5f9;
+    padding: 8px 0;
     color: #800000;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
 }
 
 .days-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr); /* 7 أعمدة متساوية */
     gap: 2px;
-    padding: 8px;
-    background: #f0f0f0;
+    padding: 5px;
+    background: #e2e8f0;
 }
 
 .day-card {
     aspect-ratio: 1/1;
+    background: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background: #fff;
-    cursor: pointer;
-    transition: transform 0.1s;
+    border-radius: 4px;
+    border: 1px solid #f0f0f0;
 }
 
-.day-card:active { transform: scale(0.9); }
+.day-card .m-num { color: #1e293b; font-weight: 800; font-size: 1.1rem; }
+.day-card .h-num { color: #64748b; font-size: 0.7rem; }
 
-.day-card .m-num { color: #1a1a1a; font-weight: 800; font-size: 1.1rem; }
-.day-card .h-num { color: #666; font-size: 0.7rem; }
-
-/* ألوان المناسبات في الجدول */
-.highlighted { color: #fff !important; }
-.highlighted span { color: #fff !important; }
-
+/* --- 2. إعادة ألوان المناسبات الدينية (بكامل قوتها) --- */
 .ramadan-day { background-color: #1b5e20 !important; }
+.ramadan-day * { color: #fff !important; }
+
 .eid-day     { background-color: #b71c1c !important; }
+.eid-day * { color: #fff !important; }
+
 .hajj-day    { background-color: #f57c00 !important; }
+.hajj-day * { color: #fff !important; }
+
 .event-day   { background-color: #1565c0 !important; }
+.event-day * { color: #fff !important; }
 
 .day-card.today {
     background: #fff9c4 !important;
     border: 2px solid #800000 !important;
-    box-shadow: 0 0 10px rgba(128,0,0,0.2);
 }
 
-/* --- 6. أزرار وأكشن --- */
-.share-btn { 
-    background: linear-gradient(135deg, #15803d 0%, #166534 100%);
-    border-radius: 12px;
-    color: #fff;
-    padding: 12px;
-    text-align: center;
-    cursor: pointer;
-    border: none;
-    width: 100%;
-    font-weight: bold;
+/* تأكيد عدم تأثر الجدول بالزجاج */
+.calendar-explorer, .calendar-explorer * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
-.countdown-style {
-    background: #450a0a;
-    color: var(--gold);
-    padding: 10px;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
 
-/* --- 7. التجاوب مع الشاشات الصغيرة --- */
+
+
+
+
+/* 📱 تحسين الشاشات الصغيرة */
 @media (max-width: 380px) {
     .digital-clock { font-size: 2.5rem; }
     .leaf-header { font-size: 1.4rem; }
-    .day-card .m-num { font-size: 0.9rem; }
     .prayer-item b { font-size: 0.9rem; }
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 0.9; }
-    50% { transform: scale(1.03); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.9; }
-}
-
-#occasionLabel { animation: pulse 2s infinite; color: #ffeb3b; }
-
-
-
-/* تأثير التوهج للصلاة القادمة */
-.next-prayer-highlight {
-    background: rgba(255, 215, 0, 0.15) !important; /* لون ذهبي خفيف خلف الكارت */
-    border: 1px solid #ffd700 !important;
-    border-radius: 8px;
-    transform: scale(1.05); /* تكبير بسيط للتميز */
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-}
-
-/* تلوين اسم الصلاة نفسها بالذهبي */
-.next-prayer-highlight span {
-    color: #ffd700 !important;
-    font-weight: bold;
 }
