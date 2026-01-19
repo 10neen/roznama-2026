@@ -1,4 +1,4 @@
-const cacheName = 'saidi-roznama-2026-v6'; 
+const cacheName = 'saidi-roznama-2026-v7'; 
 const assets = [
   './',
   './index.html',
@@ -54,5 +54,6 @@ self.addEventListener('fetch', e => {
     })
   );
 });
+
 
 
