@@ -1,4 +1,6 @@
-/* 🌟 إعدادات عامة */
+/* 🌙 ثيم أخضر إسلامي + توسيط كامل */
+
+/* إعدادات عامة */
 * {
     box-sizing: border-box;
     max-width: 100%;
@@ -6,16 +8,15 @@
 }
 
 :root {
-    --gold: #e4c674;
-    --gold-hard: #d4af37;
-    --royal-dark: #0b0f1c;
-    --royal-mid: #13203c;
-    --card-bg: rgba(30, 41, 59, 0.65);
-    --text: #f8fafc;
-    --coptic-color: #9c4a12;
+    --green-dark: #0b2e16;
+    --green-mid: #0f3e1d;
+    --green-light: #1c5f30;
+    --gold: #d4c06a;
+    --white: #f5f9f4;
+    --glass-dark: rgba(15, 62, 29, 0.30);
+    --text: #e9f7eb;
 }
 
-/* 🌌 خلفية ملكية */
 body {
     margin: 0;
     padding: 15px 0;
@@ -24,73 +25,79 @@ body {
     align-items: center;
     justify-content: flex-start;
     min-height: 100vh;
-    background: linear-gradient(180deg, var(--royal-dark) 0%, #000 100%);
+    background: linear-gradient(180deg, var(--green-dark), #000);
     direction: rtl;
     overflow-x: hidden;
 }
 
-/* 🧱 ضبط الحاوية الأساسية */
+/* حاوية رئيسية — توسيط فعلي */
 .container {
     width: 92%;
     max-width: 420px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin: 0 auto;
+    align-items: center;  /* توسيط العرض */
+    justify-content: center;
 }
 
-/* 🪟 خلفية زجاجية موحدة */
+/* خلفية زجاجية */
 .header-ads,
 .prayer-times-card,
 #daily-wisdom-container,
 .digital-clock-container {
     width: 100%;
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1.5px solid rgba(212,175,55,0.35);
-    border-radius: 20px;
+    background: var(--glass-dark);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    color: var(--text);
+    border-radius: 18px;
+    border: 1.5px solid rgba(212,192,106,0.35);
     padding: 15px;
     text-align: center;
-    color: var(--text);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
 }
 
-/* 🕰 ديجيتال كلوك */
+/* ديجيتال كلوك */
 .digital-clock-container {
-    background: linear-gradient(180deg, var(--royal-mid) 0%, var(--royal-dark) 100%);
+    background: linear-gradient(180deg, var(--green-mid), var(--green-dark));
 }
+
 .digital-clock {
     font-family: 'Courier New', monospace;
-    font-size: 3.2rem;
-    color: #00ffcc;
-    text-shadow: 0 0 15px rgba(0,255,204,0.6);
+    font-size: 3rem;
+    color: #8affb0;
+    text-shadow: 0 0 18px rgba(138,255,176,0.8);
     letter-spacing: 2px;
-    line-height: 1;
 }
 
-/* 📜 ورقة النتيجة */
+/* ورقة النتيجة */
 .calendar-leaf {
-    background: #fff;
-    border-radius: 25px;
-    overflow: hidden;
+    width: 100%;
+    background: var(--white);
+    border-radius: 22px;
     border: 4px solid var(--gold);
+    overflow: hidden;
     box-shadow: 0 15px 35px rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .leaf-header {
-    background: linear-gradient(90deg, #600000 0%, #a30d0d 100%);
+    width: 100%;
+    background: linear-gradient(90deg, #095323, #0f3e1d);
     color: #fff;
-    font-size: 1.8rem;
-    padding: 12px;
-    text-align: center;
     font-weight: bold;
-    transition: background 0.4s ease;
+    font-size: 1.6rem;
+    text-align: center;
+    padding: 12px;
 }
 
 .leaf-body {
-    background: #ffffff;
-    padding: 20px 0;
+    width: 100%;
+    padding: 18px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -98,119 +105,121 @@ body {
 
 .coptic-row {
     width: 85%;
-    margin-top: 15px;
     padding: 8px;
-    border: 2px dashed var(--coptic-color);
+    margin-top: 12px;
+    background: #f3f9f3;
+    border: 2px dashed var(--green-light);
     border-radius: 15px;
-    background-color: #fffbf0;
     text-align: center;
     color: #000;
 }
 
-/* ⏱ مواقيت الصلاة */
+/* مواقيت الصلاة */
 .prayer-grid {
+    width: 100%;
     display: flex;
     justify-content: space-around;
-    gap: 5px;
+    gap: 6px;
 }
+
 .prayer-item span {
     display: block;
-    color: var(--gold-hard);
+    color: var(--gold);
     font-size: 0.8rem;
     font-weight: bold;
 }
 .prayer-item b {
-    color: #00ffcc;
+    color: #9affc1;
     font-size: 1.1rem;
 }
 
-
-
-/* --- 1. إعادة إحياء جدول الشهور والمناسبات --- */
+/* جدول الشهر */
 .calendar-explorer {
     width: 100%;
-    background: #ffffff !important; /* خلفية بيضاء صريحة للوضوح */
-    border-radius: 20px;
+    background: #ffffff !important;
     border: 3px solid var(--gold);
+    border-radius: 18px;
     overflow: hidden;
-    margin-top: 10px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
 .explorer-header {
-    background: linear-gradient(90deg, #450a0a, #800000);
+    background: linear-gradient(90deg, #0f3e1d, #0b2e16);
     color: #fff;
-    padding: 12px;
+    padding: 10px;
     text-align: center;
     font-weight: bold;
 }
 
-/* إصلاح شبكة الأيام لتكون مسطرة */
 .grid-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    background: #f1f5f9;
-    padding: 8px 0;
-    color: #800000;
-    font-size: 0.8rem;
+    background: #ecf3ed;
+    color: #095323;
     font-weight: bold;
+    padding: 6px 0;
     border-bottom: 1px solid #ddd;
 }
 
 .days-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 أعمدة متساوية */
+    grid-template-columns: repeat(7, 1fr);
     gap: 2px;
-    padding: 5px;
-    background: #e2e8f0;
+    padding: 6px;
+    background: #e4ede6;
 }
 
 .day-card {
     aspect-ratio: 1/1;
-    background: #fff;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #e3e3e3;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    border-radius: 4px;
-    border: 1px solid #f0f0f0;
+    align-items: center;
 }
-
-.day-card .m-num { color: #1e293b; font-weight: 800; font-size: 1.1rem; }
-.day-card .h-num { color: #64748b; font-size: 0.7rem; }
-
-/* --- 2. إعادة ألوان المناسبات الدينية (بكامل قوتها) --- */
-.ramadan-day { background-color: #1b5e20 !important; }
-.ramadan-day * { color: #fff !important; }
-
-.eid-day     { background-color: #b71c1c !important; }
-.eid-day * { color: #fff !important; }
-
-.hajj-day    { background-color: #f57c00 !important; }
-.hajj-day * { color: #fff !important; }
-
-.event-day   { background-color: #1565c0 !important; }
-.event-day * { color: #fff !important; }
 
 .day-card.today {
-    background: #fff9c4 !important;
-    border: 2px solid #800000 !important;
+    background: #d7ffd7 !important;
+    border: 2px solid var(--green-light) !important;
 }
 
-/* تأكيد عدم تأثر الجدول بالزجاج */
-.calendar-explorer, .calendar-explorer * {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
+/* ألوان المناسبات */
+.ramadan-day { background:#165e2a !important; color:#fff !important; }
+.eid-day     { background:#0c3c1c !important; color:#fff !important; }
+.hajj-day    { background:#d4a006 !important; color:#fff !important; }
+.event-day   { background:#0f4fb2 !important; color:#fff !important; }
 
-
-
-
-
-
-/* 📱 تحسين الشاشات الصغيرة */
+/* الموبايل */
 @media (max-width: 380px) {
-    .digital-clock { font-size: 2.5rem; }
-    .leaf-header { font-size: 1.4rem; }
-    .prayer-item b { font-size: 0.9rem; }
+    .digital-clock { font-size: 2.4rem; }
+    .leaf-header { font-size: 1.3rem; }
+    .prayer-item b { font-size: 0.95rem; }
 }
+
+
+
+/* =========================
+   🕌 لمسة زخرفة إسلامية خفيفة
+========================= */
+.islamic-frame {
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 8px;
+    margin: 10px 0;
+    position: relative;
+    background: rgba(255,255,255,0.05);
+}
+
+.islamic-frame:before,
+.islamic-frame:after {
+    content: "۞";
+    position: absolute;
+    top: -12px;
+    color: var(--gold);
+    font-size: 1rem;
+}
+
+.islamic-frame:before { right: 10px; }
+.islamic-frame:after { left: 10px; }
