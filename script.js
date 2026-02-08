@@ -1,7 +1,13 @@
+
+
+
 // --- 1. الإعدادات الجغرافية والإعدادات العامة ---
 const LAT = 30.0444; 
 const LNG = 31.2357;
-let HIJRI_OFFSET = 0; 
+
+// تم إلغاء الـ localStorage وجعل الفرق صفر ثابت (أوتوماتيك)
+const HIJRI_OFFSET = 0; 
+
 let viewDate = new Date(2026, 0, 1); 
 
 const holidays = [
@@ -44,17 +50,32 @@ function getCopticDate(date) {
     return { d: day, m: months[monthIdx] };
 }
 
+// تم حذف دالة setHijriOffset لأن الأزرار لم تعد موجودة
+
 function getHijriDate(date) {
+    // نستخدم التاريخ مباشرة بدون تعديل يدوي
     const m = date.getMonth() + 1;
     const d = date.getDate();
     const key = `${m}-${d}`;
+    
     if (typeof HIJRI_FULL_DB !== 'undefined' && HIJRI_FULL_DB[key]) {
         return HIJRI_FULL_DB[key];
     }
-    return { d: "--", m: "خطأ" };
+    return { d: "--", m: "جاري.." };
 }
 
-// دالة تحويل الوقت لنظام 12 ساعة
+// عند التحميل، نقوم بتحديث التطبيق مباشرة
+window.addEventListener('load', () => {
+    if (typeof updateApp === "function") updateApp();
+    if (typeof renderCalendar === "function") renderCalendar();
+});
+
+
+
+
+// --- 3. كتلة مواقيت الصلاة والتقويم ---
+
+// دالة تحويل الوقت لنظام 12 ساعة (كما هي)
 function formatTime12(timeStr) {
     if (!timeStr) return "--:--";
     let [hours, minutes] = timeStr.split(':');
@@ -83,7 +104,7 @@ function calculatePrayers(date) {
             }
         });
 
-        // 2. حساب الصلاة القادمة والوقت المتبقي
+        // 2. حساب الصلاة القادمة
         const now = new Date();
         const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
         let nextIndex = -1;
@@ -96,18 +117,16 @@ function calculatePrayers(date) {
             }
         }
 
-        // إذا انتهت صلوات اليوم، الصلاة القادمة هي فجر الغد (index 0)
-        if (nextIndex === -1) nextIndex = 0;
+        if (nextIndex === -1) nextIndex = 0; // صلاة الفجر بكرة
 
         const nextId = prayerIds[nextIndex];
         const nextName = prayerNames[nextIndex];
         const nextTimeStr = times[nextIndex];
 
-        // تمييز الصلاة القادمة باللون
         const nextEl = document.getElementById(nextId);
         if (nextEl) nextEl.parentElement.classList.add("next-prayer-highlight");
 
-        // 3. حساب العداد التنازلي (ساعة:دقيقة:ثانية)
+        // 3. تحديث العداد التنازلي
         updatePrayerCountdown(nextTimeStr, nextName);
     }
 }
@@ -118,7 +137,6 @@ function updatePrayerCountdown(prayerTime, name) {
     let target = new Date();
     target.setHours(h, m, 0);
 
-    // إذا كانت الصلاة في اليوم التالي (بعد العشاء)
     if (target < now) {
         target.setDate(target.getDate() + 1);
     }
@@ -134,63 +152,87 @@ function updatePrayerCountdown(prayerTime, name) {
     }
 }
 
-
-// --- 4. بناء التقويم ---
+// --- 4. بناء التقويم الشهري (Render Calendar) ---
 function renderCalendar() {
     const grid = document.getElementById('daysGrid');
     if (!grid) return;
     grid.innerHTML = '';
+    
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
-    document.getElementById('explorerTitle').innerText = `${monthsAr[month]} ${year}`;
+    
+    const titleEl = document.getElementById('explorerTitle');
+    if (titleEl) titleEl.innerText = `${monthsAr[month]} ${year}`;
+    
     const firstDay = new Date(year, month, 1).getDay(); 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     let offset = (firstDay + 1) % 7; 
 
+    // الأيام الفارغة
     for(let i=0; i<offset; i++) {
         const emptyDiv = document.createElement('div');
         emptyDiv.className = "day-card empty";
         grid.appendChild(emptyDiv);
     }
+    
+    // بناء أيام الشهر
     for(let d=1; d<=daysInMonth; d++) {
         const curr = new Date(year, month, d);
-        const hData = getHijriDate(curr); 
+        const hData = getHijriDate(curr); // بتستخدم الدالة الأوتوماتيك اللي صلحناها في الكتلة 1
+        
         const event = holidays.find(ev => {
             const s = new Date(ev.y, ev.m - 1, ev.d);
             const e = new Date(ev.y, ev.m - 1, ev.d);
             e.setDate(s.getDate() + (ev.duration || 1) - 1);
             return curr >= s && curr <= e;
         });
+
         const daySquare = document.createElement('div');
         let cls = "day-card";
         if (event) cls += ` highlighted ${event.type}-day`;
         if (new Date().toDateString() === curr.toDateString()) cls += " today";
+        
         daySquare.className = cls;
-        daySquare.onclick = () => { updateApp(curr); daySquare.style.transform = "scale(0.9)"; setTimeout(() => daySquare.style.transform = "scale(1)", 100); };
+        daySquare.onclick = () => { 
+            updateApp(curr); 
+            daySquare.style.transform = "scale(0.9)"; 
+            setTimeout(() => daySquare.style.transform = "scale(1)", 100); 
+        };
+        
         daySquare.innerHTML = `<span class="m-num">${d}</span><span class="h-num">${hData.d}</span>`;
         grid.appendChild(daySquare);
     }
 }
 
-// --- 5. تحديث التطبيق ---
+
+// --- 5. تحديث التطبيق والتشغيل ---
+
 function updateApp(forcedDate = null) {
     const now = forcedDate || new Date(); 
     let h = now.getHours();
+    
+    // تحديث الساعة (عقرب الثواني)
     const clockEl = document.getElementById('clock');
     if (clockEl) clockEl.innerText = `${h % 12 || 12}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
     const ampmEl = document.getElementById('ampm');
     if (ampmEl) ampmEl.innerText = h >= 12 ? "مساءً" : "صباحاً";
 
-    document.getElementById('mDay').innerText = now.getDate();
-    document.getElementById('mMonth').innerText = monthsAr[now.getMonth()];
-    document.getElementById('dayName').innerText = weekDays[now.getDay()];
-    const hj = getHijriDate(now);
-    document.getElementById('hDay').innerText = hj.d;
-    document.getElementById('hMonth').innerText = hj.m;
-    const cp = getCopticDate(now);
-    document.getElementById('copticDay').innerText = cp.d;
-    document.getElementById('copticMonth').innerText = cp.m;
+    // تحديث التاريخ الميلادي واليوم
+    if (document.getElementById('mDay')) document.getElementById('mDay').innerText = now.getDate();
+    if (document.getElementById('mMonth')) document.getElementById('mMonth').innerText = monthsAr[now.getMonth()];
+    if (document.getElementById('dayName')) document.getElementById('dayName').innerText = weekDays[now.getDay()];
 
+    // تحديث التاريخ الهجري (أوتوماتيك)
+    const hj = getHijriDate(now);
+    if (document.getElementById('hDay')) document.getElementById('hDay').innerText = hj.d;
+    if (document.getElementById('hMonth')) document.getElementById('hMonth').innerText = hj.m;
+
+    // تحديث التاريخ القبطي
+    const cp = getCopticDate(now);
+    if (document.getElementById('copticDay')) document.getElementById('copticDay').innerText = cp.d;
+    if (document.getElementById('copticMonth')) document.getElementById('copticMonth').innerText = cp.m;
+
+    // تشغيل العمليات الحسابية
     calculatePrayers(now);
     updateCountdown(now);
     celebrateSaidiBirthday(now);
@@ -209,29 +251,22 @@ function updateCountdown(now) {
         }
     });
 
-    // هنا التعديل: بنخلي السكريبت يدور على كل الأماكن اللي فيها الاسم ده
     const eventContainers = document.querySelectorAll('#nextEventName'); 
-    
     if (nextEvent && eventContainers.length > 0) {
         const days = Math.ceil(minDiff / (1000 * 60 * 60 * 24));
-        // النص اللي هيظهر
         const alertText = `⚠️ تنبيه: متبقي ${days} يوم على ${nextEvent.name}`;
-        
         eventContainers.forEach(container => {
             container.innerHTML = alertText;
-            container.style.display = "block"; // بنأكد عليه يظهر فوق الستايل
-            container.style.visibility = "visible";
-            container.style.color = "#d4c06a"; // لون ذهبي عشان يبان في الستايل الأخضر
+            container.style.display = "block";
+            container.style.color = "#d4c06a";
         });
     }
 }
 
-
-// دالة الاحتفالات والتلوين
 function celebrateSaidiBirthday(now) {
     const isBirthday = (now.getDate() === 25 && (now.getMonth() + 1) === 10);
     const todayHoliday = holidays.find(h => h.d === now.getDate() && h.m === (now.getMonth() + 1));
-const topCard = document.querySelector('.calendar-leaf');
+    const topCard = document.querySelector('.calendar-leaf');
 
     if (topCard) {
         if (todayHoliday) {
@@ -252,24 +287,42 @@ const topCard = document.querySelector('.calendar-leaf');
     }
 }
 
-// المستمعات والتشغيل
-document.getElementById('prevMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() - 1); renderCalendar(); };
-document.getElementById('nextMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() + 1); renderCalendar(); };
-document.getElementById('shareBtn').onclick = (e) => {
-    e.preventDefault();
-    const shareText = `نتيجة الصحابة: ${document.getElementById('dayName').innerText} ${document.getElementById('mDay').innerText} ${document.getElementById('mMonth').innerText}`;
-    if (navigator.share) navigator.share({ title: "نتيجة الصحابة 2026", text: shareText, url: window.location.href });
-    else window.open(`https://wa.me/?text=${encodeURIComponent(shareText + " " + window.location.href)}`, '_blank');
+// --- التحكم في أزرار الشهور والمشاركة ---
+if (document.getElementById('prevMonth')) {
+    document.getElementById('prevMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() - 1); renderCalendar(); };
+}
+if (document.getElementById('nextMonth')) {
+    document.getElementById('nextMonth').onclick = () => { viewDate.setMonth(viewDate.getMonth() + 1); renderCalendar(); };
+}
 
-};
+if (document.getElementById('shareBtn')) {
+    document.getElementById('shareBtn').onclick = (e) => {
+        e.preventDefault();
+        const shareText = `نتيجة الصحابة: ${document.getElementById('dayName').innerText} ${document.getElementById('mDay').innerText} ${document.getElementById('mMonth').innerText}`;
+        if (navigator.share) navigator.share({ title: "نتيجة الصحابة 2026", text: shareText, url: window.location.href });
+        else window.open(`https://wa.me/?text=${encodeURIComponent(shareText + " " + window.location.href)}`, '_blank');
+    };
+}
 
-setInterval(updateApp, 1000);
+// --- بدء التشغيل الفعلي ---
 updateApp();
 renderCalendar();
+setInterval(updateApp, 1000); // تحديث الساعة كل ثانية
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
 }
+
+// ملاحظة: تم حذف دالة setHijriOffset القديمة تماماً من هنا لأنها لم تعد مطلوبة.
+
+
+
+
+
+
+
+
+
 
 // --- 6. ميزة الحكمة اليومية (365 يوم) ---
 
@@ -378,45 +431,44 @@ const wisdoms = [
 ];
 
 
+// --- 6. ميزة الحكمة اليومية (تأثير الكتابة) ---
+
 function displayDailyWisdom() {
     const now = new Date();
+    // حساب رقم اليوم في السنة عشان نختار حكمة مختلفة كل يوم
     const start = new Date(now.getFullYear(), 0, 0);
     const diff = now - start;
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
+    const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
     
     const wisdomEl = document.getElementById('daily-wisdom');
-    if (wisdomEl) {
-        const index = dayOfYear % wisdoms.length; 
-        const fullText = wisdoms[index];
-        
-        // تجهيز الهيكل الأساسي
-        wisdomEl.innerHTML = `
-            <div style="font-size: 0.85rem; color: #FFD700; margin-bottom: 8px; font-weight: bold;">
-               ✨ كلمتين وبس ✨
-            </div>
-            <div id="typing-text" style="color: #ffffff; line-height: 1.6; font-size: 1.05rem; font-weight: 500; min-height: 3em;">
-                " "
-            </div>
-        `;
+    if (!wisdomEl || typeof wisdoms === 'undefined') return;
 
-        // منطق تأثير الكتابة
-        let i = 0;
-        const typingContainer = document.getElementById('typing-text');
-        typingContainer.innerHTML = '"'; // البدء بعلامة الاقتباس
+    const index = dayOfYear % wisdoms.length; 
+    const fullText = wisdoms[index];
+    
+    // الهيكل الأساسي (بيظهر مرة واحدة)
+    wisdomEl.innerHTML = `
+        <div style="font-size: 0.85rem; color: #FFD700; margin-bottom: 8px; font-weight: bold;">
+            ✨ كلمتين وبس ✨
+        </div>
+        <div id="typing-text" style="color: #ffffff; line-height: 1.6; font-size: 1.05rem; font-weight: 500; min-height: 3em;">
+        </div>
+    `;
 
-        function typeWriter() {
-            if (i < fullText.length) {
-                typingContainer.innerHTML += fullText.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50); // سرعة الكتابة (50 مللي ثانية لكل حرف)
-            } else {
-                typingContainer.innerHTML += '"'; // إغلاق علامة الاقتباس في النهاية
-            }
+    let i = 0;
+    const typingContainer = document.getElementById('typing-text');
+    
+    // دالة الكتابة حرف بحرف
+    function typeWriter() {
+        if (i < fullText.length) {
+            // إضافة الحرف داخل علامتي الاقتباس
+            typingContainer.innerHTML = `"${fullText.substring(0, i + 1)}"`;
+            i++;
+            setTimeout(typeWriter, 50); 
         }
-        
-        typeWriter();
     }
+    
+    typeWriter();
 }
 
 // تشغيل الدالة فوراً
